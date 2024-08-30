@@ -1,7 +1,6 @@
 import AppInner from "@/(FSD)/widgets/app/ui/AppInner";
 import AppSection from "@/(FSD)/widgets/app/ui/AppSection";
-import UserList from "@/(FSD)/widgets/manager/ui/UserList";
-import SellerProFileContainer from "@/(FSD)/widgets/seller/ui/SellerProFileContainer";
+import UserList from "@/(FSD)/entities/manager/ui/UserList";
 import styles from '@/(FSD)/shareds/styles/UserList.module.scss';
 import React from "react";
 
