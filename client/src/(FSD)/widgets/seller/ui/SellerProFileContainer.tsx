@@ -12,6 +12,10 @@ import ProductImageCheckModal from '@/(FSD)/entities/product/ui/ProductImageChec
 import IconShared from '@/(FSD)/shareds/ui/IconShared'
 import TextMediumShared from '@/(FSD)/shareds/ui/TextMediumShared'
 import { useRouter } from 'next/navigation'
+import SellerProductStockUpdateBtn from './SellerProductStockUpdateBtn'
+
+import SellerProductShippingUpdateBtn from './SellerProductShippingUpdateBtn'
+import SellerProductSalesListBtn from './SellerProductSalesListBtn'
 
 const SellerProFileContainer = () => {
 
@@ -27,20 +31,22 @@ const SellerProFileContainer = () => {
                 />
             )}
 
-
             <UserInfoCard />
+
             <ProductCreateBtn />
-            <Button style={{ marginBottom: "10px" }} onClick={() => router.push('/seller/product/update-stock')} size={"sm"} className="w-full h-[100px] bg-white border-2" radius="none" endContent={<IconShared iconType={checkOpen ? "top" : "bottom"} />}><TextMediumShared>
-                상품 재고 수정하기</TextMediumShared></Button>
-            <Button style={{ marginBottom: "10px" }} onClick={() => router.push('/seller/product/shipping')} size={"sm"} className="w-full h-[100px] bg-white border-2" radius="none" endContent={<IconShared iconType={checkOpen ? "top" : "bottom"} />}><TextMediumShared>
-                운송장 등록하기</TextMediumShared></Button>
-            {/* <ProductOrdersStatusListBtn /> */}
 
-            <Button style={{ marginBottom: "10px" }} onClick={() => setCheckOpen(true)} size={"sm"} className="w-full h-[100px] bg-white border-2" radius="none" endContent={<IconShared iconType={checkOpen ? "top" : "bottom"} />}><TextMediumShared>
-                업로드한 이미지 조회하기</TextMediumShared></Button>
+            <SellerProductStockUpdateBtn />
 
-            <ProductListBtn/>
+            <SellerProductShippingUpdateBtn />
 
+            <Button onClick={() => setCheckOpen(true)} size={"sm"}
+                className="w-full h-[100px] bg-white border-2" radius="none"
+            ><TextMediumShared>업로드한 이미지 조회하기</TextMediumShared></Button>
+
+            <ProductListBtn />
+
+            <SellerProductSalesListBtn />
+            
             <QuestionBtn />
 
             {/* <DarkModeSelectBtn/> */}
