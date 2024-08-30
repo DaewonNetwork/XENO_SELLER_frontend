@@ -6,5 +6,5 @@ export type OrderProductInfoType = {
     quantity: number;
     price: number;
     name?: string;
-    image?: Uint8Array | null
+    image?: string;
 };

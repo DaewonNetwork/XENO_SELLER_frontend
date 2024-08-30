@@ -12,6 +12,11 @@ export const imageState = atom<ProductImages[]>({
     default: [],
 })
 
+export const urlState = atom<string>({
+    key: "urlState",
+    default: "",
+})
+
 export const productsState = atom<OrderProductInfoType[]>({
     key: "productsState",
     default: [],

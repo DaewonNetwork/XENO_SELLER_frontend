@@ -11,7 +11,7 @@ import { useProductColorFirstImegeListRead } from "@/(FSD)/entities/product/api/
 
 export interface ProductImages {
     productId: number;          // 상품 색상 ID (숫자)
-    productColorImage: Uint8Array;   // 상품 색상 이미지 (Uint8Array)
+    productImage: string;   // 상품 색상 이미지 (Uint8Array)
 }
 
 const ProductOtherColorImageList = () => {
@@ -44,7 +44,7 @@ const ProductOtherColorImageList = () => {
         
     }, [productImages,data, setImages]);
     
-    const totalImages = useMemo(() => productImages.filter(p => p.productColorImage).length, [productImages]);
+    const totalImages = useMemo(() => productImages.filter(p => p.productImage).length, [productImages]);
     const shouldEnableSlider = totalImages >= 3;
 
     if(!data) return <></>
@@ -65,7 +65,7 @@ const ProductOtherColorImageList = () => {
                             <div key={index} className={style.different_color_images} style={{ cursor: "pointer" }}>
                                 <a href={`/products/${p.productId}`}>
                                     <img
-                                        src={`data:image/jpeg;base64,${p.productColorImage}`}
+                                        src={`data:image/jpeg;base64,${p.productImage}`}
                                         alt={`상품 이미지 ${p.productId}`}
                                     />
                                 </a>
@@ -79,7 +79,7 @@ const ProductOtherColorImageList = () => {
                         <div key={index} className={style.different_color_images} style={{ cursor: "pointer" }}>
                             <a href={`/products/${p.productId}`}>
                                 <img
-                                    src={`data:image/jpeg;base64,${p.productColorImage}`}
+                                    src={`data:image/jpeg;base64,${p.productImage}`}
                                     alt={`상품 이미지 ${p.productId}`}
                                 />
                             </a>
