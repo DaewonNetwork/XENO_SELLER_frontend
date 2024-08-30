@@ -26,3 +26,15 @@ export const reqState = atom<string>({
     key: "reqState",
     default: ""
 });
+
+export const productListState = atom<Set<string>>({
+    key: "productListState",
+    default: new Set<string>([])
+});
+
+
+
+export const isUrlState = atom<boolean[][]>({
+    key: "isUrlState",
+    default: [[]] // 기본값 빈 2차원 배열
+});

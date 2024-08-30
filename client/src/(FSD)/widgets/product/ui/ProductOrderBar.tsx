@@ -80,9 +80,9 @@ const ProductOrderBar = ({ orderBar, parentRefetch }: { orderBar: ProductOrderBa
     
     const uniqueColors = Array.from(new Set(orderBar.orderInfo.map(item => item.color)));
 
-    const getProductColorSizeId = (color: string, size: string): number | undefined => {
+    const getproductOptionId = (color: string, size: string): number | undefined => {
         const orderItem = orderBar.orderInfo.find(item => item.color === color && item.size === size);
-        return orderItem?.productColorSizeId;
+        return orderItem?.productOptionId;
     };
 
     const getproductId = (color: string): number | undefined => {
@@ -115,19 +115,19 @@ const ProductOrderBar = ({ orderBar, parentRefetch }: { orderBar: ProductOrderBa
     const selectSize = (size: string) => {
         setSize(size);
         setIsSelectedSize(false);
-        const productColorSizeId = getProductColorSizeId(color, size);
+        const productOptionId = getproductOptionId(color, size);
         const productId = getproductId(color)
 
-        if (productColorSizeId !== undefined) {
+        if (productOptionId !== undefined) {
             // 제품 정보를 products 배열에 추가하기 전에 중복 체크
-            const isDuplicate = products.some(product => product.productColorSizeId === productColorSizeId);
+            const isDuplicate = products.some(product => product.productOptionId === productOptionId);
 
             if (isDuplicate) {
                 alert("이미 선택한 옵션입니다.");
             } else {
                 setProducts(prevProducts => [
                     ...prevProducts,
-                    { productColorSizeId, color, size, quantity: 1, price: orderBar.price, productId: productId }
+                    { productOptionId, color, size, quantity: 1, price: orderBar.price, productId: productId }
                 ]);
                 setColor("");
                 setSize("");

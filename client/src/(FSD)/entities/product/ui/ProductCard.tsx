@@ -37,7 +37,7 @@ const ProductCard = ({ product, likeBtn, isRank = false, rank = 0 , isColor = fa
                 {!product.productImage && <Skeleton className={styles.product_skeleton} />}
                 {product.productImage &&
                     <img
-                        src={`data:image/jpeg;base64,${product.productImage}`}
+                        src={product.productImage}
                         className={styles.product_image}
                     />}
                 {likeBtn && <div className={styles.product_like_btn}>{likeBtn}</div>}

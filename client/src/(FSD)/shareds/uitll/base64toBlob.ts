@@ -1,20 +1,20 @@
-export function base64toBlob(base64Data:any, contentType:any) {
-    contentType = contentType || '';
-    const sliceSize = 512;
-    const byteCharacters = atob(base64Data);
-    const byteArrays = [];
-  
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      const slice = byteCharacters.slice(offset, offset + sliceSize);
-  
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-  
-      const byteArray = new Uint8Array(byteNumbers);
-      byteArrays.push(byteArray);
+export async function fetchImageToBlob(imageURL: string): Promise<Blob> {
+    try {
+        // 이미지 URL에서 데이터 가져오기
+        const response = await fetch(imageURL, {
+            method: 'GET',
+            mode: 'cors'
+        })
+
+        // 응답 상태 확인
+        if (!response.ok) {
+            throw new Error(`Network response was not ok. Status: ${response.status}`);
+        }
+
+        // 응답의 Blob 데이터 반환
+        return await response.blob();
+    } catch (error) {
+        console.error('Error fetching image to Blob:', error);
+        throw error;
     }
-  
-    return new Blob(byteArrays, { type: contentType });
-  }
+}
