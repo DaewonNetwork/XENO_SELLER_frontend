@@ -8,7 +8,7 @@ import { useProductColorOrderBarRead } from "@/(FSD)/entities/product/api/usePro
 
  export interface OrderProductInfoType {
     productId: number;
-    productColorSizeId: number;
+    productOptionId: number;
     color: string;
     size: string;
     stock: number;

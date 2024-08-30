@@ -1,4 +1,5 @@
-import { ProductImageInfoType } from "@/(FSD)/features/product/ui/ProductColorUpdateForm";
+
+import { ProductImageInfoType } from "@/(FSD)/features/product/ui/ProductImageUpdateContainer";
 import { atom } from "recoil";
 
 
@@ -11,7 +12,7 @@ import { atom } from "recoil";
     key: 'detailImageState',
     default: {
         imageId:1,
-      productColorImage: null,
+      productImage: null,
       filename: null,
     },
   });

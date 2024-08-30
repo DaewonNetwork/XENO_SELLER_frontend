@@ -18,6 +18,7 @@ import { download, newDownload } from "@/(FSD)/entities/product/api/useProductLi
 
 
 
+
 export interface ImageListType {
     productNumber: string;
     url_1: string;
@@ -63,13 +64,15 @@ const ProductCreateForm = () => {
     });
 
     const onSubmit = async () => {
-        const promises = formBlocks.map((_, i) => {
+        let allSuccess = true;
+
+        for (let i = 0; i < formBlocks.length; i++) {
             const formData = new FormData();
             const productNumber = getValues(`productNumber-${i}`); // 각 블록의 productNumber 가져오기
 
             formData.append("productNumber", productNumber);
+           
 
-            // 각 블록의 이미지들을 FormData에 추가
             productImages[i]?.forEach((image: File) => {
                 if (image) {
                     formData.append(`productImages`, image);
@@ -80,28 +83,29 @@ const ProductCreateForm = () => {
                 formData.append(`productDetailImage`, productDetailImage[i]);
             }
 
-            // mutate 호출 시 FormData와 인덱스를 함께 전달
-            return new Promise<number>((resolve, reject) => {
-                mutate({ formData, index: i }, {
-                    onSuccess: (data: ProductCreateResponse) => {
-                        resolve(data.index); // 성공 시 인덱스를 반환
-                    },
-                    onError: () => {
-                        reject(i); // 실패 시 인덱스를 반환
-                    },
-                });
+            // 업로드를 비동기적으로 처리
+            await new Promise<void>((resolve, reject) => {
+                mutate(
+                    { formData, index: i },
+                    {
+                        onSuccess: () => {
+                            resolve();
+                        },
+                        onError: () => {
+                            allSuccess = false;
+                            reject();
+                        }
+                    }
+                );
+            }).catch(() => {
+                allSuccess = false;
             });
-        });
+        }
 
-        try {
-            const results = await Promise.all(promises);
-            // 모든 mutate 호출이 성공적으로 완료됨
-            results.forEach((index) => {
-                alert(`${index + 1} 번째 블록이 성공적으로 업로드되었습니다!`);
-            });
-        } catch (error) {
-            // 하나 이상의 mutate 호출이 실패했을 때
-            alert("블록 업로드에 실패했습니다.");
+        if (allSuccess) {
+            alert("모든 블록이 성공적으로 업로드되었습니다!");
+        } else {
+            alert("일부 블록의 업로드에 실패했습니다.");
         }
     };
 

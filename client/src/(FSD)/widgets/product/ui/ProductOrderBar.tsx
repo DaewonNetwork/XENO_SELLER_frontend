@@ -10,7 +10,7 @@ import ProductLikeBtn from "@/(FSD)/features/product/ui/ProductLikeBtn";
 import { useParams, useRouter } from "next/navigation";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/modal";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { imageState, nameState, productsState } from "@/(FSD)/shareds/stores/ProductAtom";
+import { imageState, nameState, productsState, urlState } from "@/(FSD)/shareds/stores/ProductAtom";
 import { OrderProductInfoType } from "@/(FSD)/shareds/types/product/OrderProductInfo.type";
 import { ProductOrderBarType } from "./ProductOrderBarContainer";
 import { ProductImages } from "./ProductOtherColorImageList";
@@ -35,7 +35,7 @@ const ProductOrderBar = ({ orderBar, parentRefetch }: { orderBar: ProductOrderBa
     const [sizeAndStock, setSizeAndStock] = useState<SizeAndStockType[]>([]);
     const [products, setProducts] = useState<OrderProductInfoType[]>([]);
     const name = useRecoilValue(nameState);
-    const images: ProductImages[] = useRecoilValue(imageState)
+    const image = useRecoilValue(urlState)
     const [newProducts, setNewProducts] = useRecoilState<OrderProductInfoType[]>(productsState)
     const  isLoggedIn  = useRecoilValue(isLoggedInState);
   
@@ -80,9 +80,9 @@ const ProductOrderBar = ({ orderBar, parentRefetch }: { orderBar: ProductOrderBa
     
     const uniqueColors = Array.from(new Set(orderBar.orderInfo.map(item => item.color)));
 
-    const getProductColorSizeId = (color: string, size: string): number | undefined => {
+    const getproductOptionId = (color: string, size: string): number | undefined => {
         const orderItem = orderBar.orderInfo.find(item => item.color === color && item.size === size);
-        return orderItem?.productColorSizeId;
+        return orderItem?.productOptionId;
     };
 
     const getproductId = (color: string): number | undefined => {
@@ -115,19 +115,19 @@ const ProductOrderBar = ({ orderBar, parentRefetch }: { orderBar: ProductOrderBa
     const selectSize = (size: string) => {
         setSize(size);
         setIsSelectedSize(false);
-        const productColorSizeId = getProductColorSizeId(color, size);
+        const productOptionId = getproductOptionId(color, size);
         const productId = getproductId(color)
 
-        if (productColorSizeId !== undefined) {
+        if (productOptionId !== undefined) {
             // 제품 정보를 products 배열에 추가하기 전에 중복 체크
-            const isDuplicate = products.some(product => product.productColorSizeId === productColorSizeId);
+            const isDuplicate = products.some(product => product.productOptionId === productOptionId);
 
             if (isDuplicate) {
                 alert("이미 선택한 옵션입니다.");
             } else {
                 setProducts(prevProducts => [
                     ...prevProducts,
-                    { productColorSizeId, color, size, quantity: 1, price: orderBar.price, productId: productId }
+                    { productOptionId, color, size, quantity: 1, price: orderBar.price, productId: productId }
                 ]);
                 setColor("");
                 setSize("");
@@ -214,15 +214,10 @@ const ProductOrderBar = ({ orderBar, parentRefetch }: { orderBar: ProductOrderBa
             setIsSelectedColor(false);
             setIsSelectedSize(false);
             const newProducts1: OrderProductInfoType[] = products.map(product => {
-
-                const matchingImage = images.find(image => image.productId === product.productId);
-
-                const productImage = matchingImage ? matchingImage.productColorImage : null;
-
                 return {
                     ...product,
                     name: name,
-                    image: productImage
+                    image: image
                 };
             });
 

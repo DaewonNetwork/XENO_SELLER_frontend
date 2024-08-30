@@ -22,7 +22,7 @@ const OrderProductInfo = ({ product }: OrderProductInfoProps) => {
         className={styles.order_product_info}
         >
             <div className={styles.info_image}>
-                <img src={`data:image/jpeg;base64,${product.image}`} onClick={()=>  router.push(`/products/${product.productId}`)} style={{cursor: "pointer"}} />
+                <img src={product.image} onClick={()=>  router.push(`/products/${product.productId}`)} style={{cursor: "pointer"}} />
             </div>
             <div className={styles.info_text}>
                 <div className={styles.text_top}>
