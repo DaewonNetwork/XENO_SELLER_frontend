@@ -33,6 +33,17 @@ const UserList = () => {
     return (
         <div className={styles.tableContainer}>
             <table className={styles.userTable}>
+            <colgroup>
+                <col style={{width: '5%'}} />
+                <col style={{width: '15%'}} />
+                <col style={{width: '15%'}} />
+                <col style={{width: '15%'}} />
+                <col style={{width: '20%'}} />
+                <col style={{width: '5%'}} />
+                <col style={{width: '10%'}} />
+                <col style={{width: '5%'}} />
+                <col style={{width: '10%'}} />
+            </colgroup>
                     <thead>
                         <tr>
                             <th>userID</th>
@@ -68,6 +79,28 @@ const UserList = () => {
                             </tr>
                         ))}
                     </tbody>
+                    {/* <tbody>
+                        {data?.map((user) => (
+                        <tr key={user.userId}>
+                            <td>{user.userId}</td>
+                            <td title={user.name}>{user.name}</td>
+                            <td title={user.email}>{user.email}</td>
+                            <td title={user.phoneNumber}>{user.phoneNumber}</td>
+                            <td title={user.address}>{user.address}</td>
+                            <td>{user.roles.join(', ')}</td>
+                            <td>{user.point}</td>
+                            <td>{user.level}</td>
+                            <td>
+                            <button 
+                                className={styles.deleteButton}
+                                onClick={() => handleDeleteUser(user.userId)}
+                            >
+                                삭제
+                            </button>
+                            </td>
+                        </tr>
+                        ))}
+                </tbody> */}
             </table>
         </div>
     );

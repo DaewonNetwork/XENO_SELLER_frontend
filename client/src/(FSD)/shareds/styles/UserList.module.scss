@@ -9,12 +9,12 @@
       width: 100%;
       border-collapse: collapse;
       background-color: white;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   
       th, td {
         padding: 12px 15px;
         text-align: left;
         border-bottom: 1px solid #e0e0e0;
+        white-space: nowrap; // 추가: 줄 바꿈 방지
       }
   
       th {
