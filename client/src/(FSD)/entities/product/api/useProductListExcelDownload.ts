@@ -110,9 +110,10 @@ export const stockDownload = async () => {
         throw error; // 필요에 따라 에러를 처리합니다.
     }
 };
+
 export const paymentCompletedOrderDownload = async () => {
     try {
-        const response = await fetch('http://localhost:8090/api/orders/download/order-excel', {
+        const response = await fetch('http://localhost:8090/api/orders/download/order-shipping-excel', {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -146,3 +147,59 @@ export const paymentCompletedOrderDownload = async () => {
         throw error; // 필요에 따라 에러를 처리합니다.
     }
 };
+
+
+interface DayType {
+    startYear: number;
+    startMonth: number;
+    startDay: number;
+    endYear: number;
+    endMonth: number;
+    endDay: number;
+}
+
+export const orderDownload = async (
+    { startYear, startMonth, startDay, endYear, endMonth, endDay }: DayType
+): Promise<void> => {
+    try {
+        const response = await fetch(`http://localhost:8090/api/orders/download/order-excel?startYear=${startYear}&startMonth=${startMonth}&startDay=${startDay}&endYear=${endYear}&endMonth=${endMonth}&endDay=${endDay}`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // Blob 객체로 응답을 처리
+        const blob = await response.blob();
+        
+        // Blob을 URL로 변환
+        const url = window.URL.createObjectURL(blob);
+        
+        // 다운로드 링크를 생성
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'orderList.xlsx'); // 파일 이름 설정
+        
+        // 링크를 클릭하여 다운로드 시작
+        document.body.appendChild(link);
+        link.click();
+        
+        // 링크를 DOM에서 제거
+        document.body.removeChild(link);
+
+        // Blob URL을 해제하여 메모리 누수를 방지
+        window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+        console.error('Error fetching and downloading the Excel file:', error);
+        throw error; // 필요에 따라 에러를 처리합니다.
+    }
+};
+
+
+
+
