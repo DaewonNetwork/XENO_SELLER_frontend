@@ -6,18 +6,6 @@ export const useDeleteUser = () => {
     const fetchData = useFetchData();
     const queryClient = useQueryClient();
 
-    // return useMutation({
-    //     mutationFn: (userId: number) => 
-    //         fetchData({ 
-    //             path: `/manager/${userId}`, 
-    //             method: 'DELETE', 
-    //             isAuthRequired: true 
-    //         }),
-    //     onSuccess: () => {
-    //         queryClient.invalidateQueries({ queryKey: ALL_USERS_QUERY_KEY });
-    //     }
-    // });
-
     return useMutation({
         mutationFn: async (userId: number) => {
             try {
