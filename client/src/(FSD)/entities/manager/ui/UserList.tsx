@@ -8,6 +8,7 @@ import { useDeleteUser } from '../api/useDeleteUser';
 import { useQueryClient } from '@tanstack/react-query';
 import PointAdjustmentModal from './PointAdjustmentModal';
 import LevelAdjustmentModal from './LevelAdjustmentModal';
+import LinkBtnShared from '@/(FSD)/shareds/ui/LinkBtnShared';
 
 const UserList = () => {
     const queryClient = useQueryClient();
@@ -39,19 +40,9 @@ const UserList = () => {
         refetch();
     }, [refetch]);
 
-    // const handlePointUpdate = useCallback(() => {
-    //     handleModalClose();
-    // }, [handleModalClose]);
-
     const handleUpdate = useCallback(() => {
         refetch();
     }, [refetch]);
-
-    // useEffect(() => {
-    //     if (!isLoading && !error) {
-    //         refetch();
-    //     }
-    // }, [isLoading, error, refetch]);
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
@@ -61,7 +52,7 @@ const UserList = () => {
             <table className={styles.userTable}>
                 <thead>
                     <tr>
-                        <th>userID</th>
+                        <th>User ID</th>
                         <th>Email</th>
                         <th>이름</th>
                         <th>전화번호</th>
@@ -117,6 +108,16 @@ const UserList = () => {
                     ))}
                 </tbody>
             </table>
+            <div className={styles.buttonContainer}>
+                <LinkBtnShared 
+                    href="/manager/brand" 
+                    variant="solid" 
+                    color="primary"
+                    className={styles.sellerManagementButton}
+                >
+                    판매사 관리
+                </LinkBtnShared>
+            </div>
             {selectedUser && (
                 <>
                     <PointAdjustmentModal
