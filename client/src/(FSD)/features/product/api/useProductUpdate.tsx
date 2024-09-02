@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { MutationType } from "../../types/mutation.type";
 import { useEffect, useState } from "react";
+import { apiPath } from "@/(FSD)/shareds/fetch/APIpath";
 
 const productUpdateFetch = async (data: any) => {
     const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -13,7 +14,7 @@ const productUpdateFetch = async (data: any) => {
         }
     }, []);
 
-    const response = await fetch("http://localhost:8090/api/product/update", {
+    const response = await fetch(`${apiPath}/api/product/update`, {
         method: "PUT",
         headers: {
             Authorization: `Bearer ${accessToken}`,

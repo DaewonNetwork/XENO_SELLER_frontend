@@ -12,6 +12,7 @@ import TextMediumShared from "@/(FSD)/shareds/ui/TextMediumShared";
 import { useRecoilState } from "recoil";
 import { productListState } from "@/(FSD)/shareds/stores/ProductAtom";
 import { stockDownload } from "@/(FSD)/entities/product/api/useProductListExcelDownload";
+import { apiPath } from "@/(FSD)/shareds/fetch/APIpath";
 interface ProductColorCreateBtnType {
     productId: number;
     productNumber: string;
@@ -53,7 +54,7 @@ const SellerProductStockUpdateBtn = () => {
         formData.append('excel', excelFile);
 
         try {
-            const response = await fetch("http://localhost:8090/api/product/update/stock", {
+            const response = await fetch(`${apiPath}/api/product/update/stock`, {
                 method: 'PUT',
                 headers: {
                     Authorization: `Bearer ${accessToken}`,

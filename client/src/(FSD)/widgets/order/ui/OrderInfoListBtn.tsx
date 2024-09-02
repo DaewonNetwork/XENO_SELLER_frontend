@@ -9,6 +9,7 @@ import { Button } from "@nextui-org/button";
 import { Select, SelectItem } from "@nextui-org/select";
 import IconShared from "@/(FSD)/shareds/ui/IconShared";
 import TextMediumShared from "@/(FSD)/shareds/ui/TextMediumShared";
+import { apiPath } from "@/(FSD)/shareds/fetch/APIpath";
 
 export interface UploadImageReadDTO {
     productNumber: string;
@@ -40,7 +41,7 @@ const OrderInfoListBtn = () => {
     const get = async () => {
      
         try {
-            const response = await fetch('http://localhost:8090/api/product/read/all-upload-images', {
+            const response = await fetch(`${apiPath}/api/product/read/all-upload-images`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
@@ -62,7 +63,7 @@ const OrderInfoListBtn = () => {
 
     const download = async () => {
         try {
-            const response = await fetch('http://localhost:8090/api/product/download/excel', {
+            const response = await fetch(`${apiPath}/api/product/download/excel`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${accessToken}`,

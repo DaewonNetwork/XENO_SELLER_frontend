@@ -1,9 +1,11 @@
+import { apiPath } from "./APIpath";
+
 interface fetchServerDataType {
     path: string;
 }
 
 export const fetchServerData = async ({ path, }: fetchServerDataType) => {
-    const response = await fetch(`http://localhost:8090${path}`);
+    const response = await fetch(`${apiPath}${path}`);
     
     const data = response.json();
 

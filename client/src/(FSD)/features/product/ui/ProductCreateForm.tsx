@@ -15,6 +15,7 @@ import { ProductCreateResponse, useProductCreate } from "../api/useProductCreate
 import { useRouter } from "next/navigation";
 import ProductImageCheckModal from "@/(FSD)/entities/product/ui/ProductImageCheckModal";
 import { download, newDownload } from "@/(FSD)/entities/product/api/useProductListExcelDownload";
+import { apiPath } from "@/(FSD)/shareds/fetch/APIpath";
 
 
 
@@ -132,7 +133,7 @@ const ProductCreateForm = () => {
         formData.append('excel', excelFile);
 
         try {
-            const response = await fetch("http://localhost:8090/api/product/create", {
+            const response = await fetch(`${apiPath}/api/product/create`, {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${accessToken}`,

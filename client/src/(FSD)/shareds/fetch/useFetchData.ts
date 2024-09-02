@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { FetchType } from "../types/FetchData.type";
+import { apiPath } from "./APIpath";
 
 const useFetchData = () => {
     const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -18,7 +19,7 @@ const useFetchData = () => {
         let response = null;
         
         if ((!isNotAuthRequired) || (isAuthRequired)) {
-            response = await fetch(`http://localhost:8090/api${path}`, {
+            response = await fetch(`${apiPath}/api${path}`, {
                 method: method,
                 headers: {
                     "Content-Type": contentType,
@@ -27,7 +28,7 @@ const useFetchData = () => {
                 body: JSON.stringify(body)
             });
         } else {
-            response = await fetch(`http://localhost:8090${path}`, {
+            response = await fetch(`${apiPath}${path}`, {
                 method: method,
                 headers: {
                     "Content-Type": contentType,

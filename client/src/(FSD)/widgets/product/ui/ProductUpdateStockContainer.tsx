@@ -13,6 +13,7 @@ import { productDetailImageState, productImagesState } from "@/(FSD)/shareds/sto
 import { useRouter } from "next/navigation";
 import ProductImageCheckModal from "@/(FSD)/entities/product/ui/ProductImageCheckModal";
 import { stockDownload } from "@/(FSD)/entities/product/api/useProductListExcelDownload";
+import { apiPath } from "@/(FSD)/shareds/fetch/APIpath";
 
 
 
@@ -51,7 +52,7 @@ const ProductUpdateStockContainer = () => {
         formData.append('excel', excelFile);
 
         try {
-            const response = await fetch("http://localhost:8090/api/product/update/stock", {
+            const response = await fetch(`${apiPath}/api/product/update/stock`, {
                 method: 'PUT',
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
