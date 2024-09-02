@@ -38,6 +38,8 @@ const ProductColorCreateForm = () => {
     const productImages = useRecoilValue(productImagesState);
     const productDetailImage = useRecoilValue(productDetailImageState);
 
+    const [productIndex, setProductIndex] = useState(0);
+
 
 
     const [sizeStocks, setSizeStocks] = useState<SizeStocksType[]>([]);
@@ -214,7 +216,7 @@ const ProductColorCreateForm = () => {
                 </Button>
                 <Button isDisabled={(!isValid) || (!productImages) || (!productDetailImage) || (isSizeStockValid)} fullWidth size={"lg"} type={"submit"} color={"primary"}>등록하기</Button>
             </form>
-            {isOpen && <ProductImageCreateModal setIsOpen={setIsOpen} files={productImages} detailFile={productDetailImage} />}
+            {isOpen && <ProductImageCreateModal setIsOpen={setIsOpen} files={productImages} detailFile={productDetailImage} index={productIndex}/>}
         </>
     );
 };

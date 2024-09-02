@@ -11,5 +11,5 @@ export interface OrderInfoType {
     quantity: number;
     review?: boolean
     reviewId?: number;
-    productImage: Uint8Array | null; // byte[]에 해당하는 ArrayBuffer로 처리
+    productImage: string; // byte[]에 해당하는 ArrayBuffer로 처리
 }

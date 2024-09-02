@@ -23,7 +23,7 @@ const ProductListBtn = () => {
     const router = useRouter();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-    const [values, setValues] = React.useState(new Set([]));
+    const [values, setValues] = React.useState<Set<string>>(new Set([]));
 
     useEffect(() => {
 
@@ -37,10 +37,14 @@ const ProductListBtn = () => {
     if (isPending) return <p>Loading...</p>;
     if (isError) return <p>Error: {error.message}</p>;
 
-    const handleSetProductList = (values: Set<never>) => {
-        setProductList(values);
-        router.push('/seller/product/update-image')
-    }
+    const handleSetProductList = (selectedValues: Set<string>) => {
+        setProductList(selectedValues);
+        router.push('/seller/product/update-image');
+    };
+
+    const handleSelectionChange = (keys: any) => {
+        setValues(new Set(keys));
+    };
 
     return (
         <>
@@ -56,7 +60,7 @@ const ProductListBtn = () => {
 
 
                                 {productInfoList.length > 0 ? (
-                                    <Select selectionMode="multiple" label="최대 5개까지 선택 가능해요." selectedKeys={values} onSelectionChange={setValues} >
+                                    <Select selectionMode="multiple" label="최대 5개까지 선택 가능해요." selectedKeys={values} onSelectionChange={handleSelectionChange} >
                                         {productInfoList.map(product => (
                                             <SelectItem key={product.productNumber}
                                             >

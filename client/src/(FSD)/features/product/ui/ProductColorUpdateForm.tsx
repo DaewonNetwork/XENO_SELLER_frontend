@@ -19,7 +19,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { productDetailImageState, productImagesState } from "@/(FSD)/shareds/stores/ProductCreateAtome";
 import { Input } from "@nextui-org/input";
 import { useProductColorSizeStockRead } from "@/(FSD)/entities/product/api/useProductColorSizeStockRead";
-import { useProductColorUpdate } from "../api/useProductColorUpdate";
+
 import ProductImageUpdateModal from "./ProductImageUpdateModal";
 import { detailImageState, imagesState } from "@/(FSD)/shareds/stores/PreviewAtom";
 import { useProductColorDelete } from "../api/useProductColorDelete";
@@ -57,6 +57,8 @@ const ProductColorUpdateForm = () => {
     const [sizeStocks, setSizeStocks] = useState<SizeStocksType[]>([]);
     const router = useRouter();
     const sizeArray = ["S", "M", "L", "XL"];
+    const [productIndex, setProductIndex] = useState(0);
+    const productNumber = data?.productNumber || '';
 
     useEffect(() => {
         if (data) {
@@ -96,7 +98,7 @@ const ProductColorUpdateForm = () => {
         router.push('/seller')
     }
 
-    const { mutate } = useProductColorUpdate({ onSuccess });
+    // const { mutate } = useProductColorUpdate({ onSuccess });
     const { mutate:deleteProductColor } = useProductColorDelete({ onSuccess });
 
     const onSubmit = (data: any) => {
@@ -109,7 +111,7 @@ const ProductColorUpdateForm = () => {
             }
         });
         formData.append("productDetailImage", productDetailImage);
-        mutate(formData);
+        // mutate(formData);
     }
 
     if (!data) return <></>
@@ -206,7 +208,7 @@ const ProductColorUpdateForm = () => {
                 <Button isDisabled={(!isValid) || (!productImages) || (!productDetailImage)} fullWidth size={"lg"} type={"submit"}>수정하기</Button>
                 <Button fullWidth size={"lg"} onClick={() => deleteProductColor(+productId)} >삭제하기</Button>
             </form>
-            {isOpen && <ProductImageUpdateModal setIsOpen={setIsOpen} files={productImages} detailFile={productDetailImage} />}
+            {isOpen && <ProductImageUpdateModal setIsOpen={setIsOpen} files={productImages} detailFile={productDetailImage} index={productIndex} productNumber={productNumber}/>}
         </>
     );
 };
