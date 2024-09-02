@@ -1,8 +1,15 @@
+'use client'
+
+import { apiPath } from "@/(FSD)/shareds/fetch/APIpath";
+import { useEffect, useState } from "react";
+
 const accessToken = localStorage.getItem("access_token");
 
 export const download = async () => {
+   
+
     try {
-        const response = await fetch('http://localhost:8090/api/product/download/excel', {
+        const response = await fetch(`${apiPath}/api/product/download/excel`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -38,8 +45,20 @@ export const download = async () => {
 };
 
 export const newDownload = async () => {
+
+    const [accessToken, setAccessToken] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            // 클라이언트 사이드에서만 실행됨
+            const token = localStorage.getItem("access_token");
+            setAccessToken(token);
+        }
+    }, []);
+    
+
     try {
-        const response = await fetch('http://localhost:8090/api/product/download/new-excel', {
+        const response = await fetch(`${apiPath}/api/product/download/new-excel`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -75,8 +94,21 @@ export const newDownload = async () => {
 };
 
 export const stockDownload = async () => {
+
+    const [accessToken, setAccessToken] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            // 클라이언트 사이드에서만 실행됨
+            const token = localStorage.getItem("access_token");
+            setAccessToken(token);
+        }
+    }, []);
+    
+
+
     try {
-        const response = await fetch('http://localhost:8090/api/product/download/stock-excel', {
+        const response = await fetch(`${apiPath}/api/product/download/stock-excel`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -112,8 +144,21 @@ export const stockDownload = async () => {
 };
 
 export const paymentCompletedOrderDownload = async () => {
+
+    const [accessToken, setAccessToken] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            // 클라이언트 사이드에서만 실행됨
+            const token = localStorage.getItem("access_token");
+            setAccessToken(token);
+        }
+    }, []);
+    
+
+    
     try {
-        const response = await fetch('http://localhost:8090/api/orders/download/order-shipping-excel', {
+        const response = await fetch(`${apiPath}/api/orders/download/order-shipping-excel`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -161,8 +206,14 @@ interface DayType {
 export const orderDownload = async (
     { startYear, startMonth, startDay, endYear, endMonth, endDay }: DayType
 ): Promise<void> => {
+
+  
+            // 클라이언트 사이드에서만 실행됨
+            const accessToken = localStorage.getItem("access_token");
+     
+    
     try {
-        const response = await fetch(`http://localhost:8090/api/orders/download/order-excel?startYear=${startYear}&startMonth=${startMonth}&startDay=${startDay}&endYear=${endYear}&endMonth=${endMonth}&endDay=${endDay}`, {
+        const response = await fetch(`${apiPath}/api/orders/download/order-excel?startYear=${startYear}&startMonth=${startMonth}&startDay=${startDay}&endYear=${endYear}&endMonth=${endMonth}&endDay=${endDay}`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -199,6 +250,7 @@ export const orderDownload = async (
         throw error; // 필요에 따라 에러를 처리합니다.
     }
 };
+
 
 
 
