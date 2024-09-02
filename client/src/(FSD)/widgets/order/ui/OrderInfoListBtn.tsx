@@ -10,7 +10,7 @@ import { Select, SelectItem } from "@nextui-org/select";
 import IconShared from "@/(FSD)/shareds/ui/IconShared";
 import TextMediumShared from "@/(FSD)/shareds/ui/TextMediumShared";
 
-interface UploadImageReadDTO {
+export interface UploadImageReadDTO {
     productNumber: string;
     url_1: string;
     url_2?: string;
@@ -18,8 +18,7 @@ interface UploadImageReadDTO {
     url_4?: string;
     url_5?: string;
     url_6?: string;
-    detail_url_1?: string;
-    createdAt: string;
+    detailUrl?: string;
 }
 
 const OrderInfoListBtn = () => {
@@ -45,7 +44,7 @@ const OrderInfoListBtn = () => {
             }
     
             const data: UploadImageReadDTO[] = await response.json();
-            console.log(data)
+      
             setImages(data);
         } catch (error) {
             console.error('Error fetching upload images:', error);
@@ -106,7 +105,7 @@ const OrderInfoListBtn = () => {
                         {image.url_4 && <img src={image.url_4} alt={`Image ${index}_url_4`} style={{ maxWidth: '100px', margin: '5px' }} />}
                         {image.url_5 && <img src={image.url_5} alt={`Image ${index}_url_5`} style={{ maxWidth: '100px', margin: '5px' }} />}
                         {image.url_6 && <img src={image.url_6} alt={`Image ${index}_url_6`} style={{ maxWidth: '100px', margin: '5px' }} />}
-                        {image.detail_url_1 && <img src={image.detail_url_1} alt={`Image ${index}_detail_url_1`} style={{ maxWidth: '100px', margin: '5px' }} />}
+                        {image.detailUrl && <img src={image.detailUrl} alt={`Image ${index}_detailUrl`} style={{ maxWidth: '100px', margin: '5px' }} />}
                     </div>
                 ))}
             </div>

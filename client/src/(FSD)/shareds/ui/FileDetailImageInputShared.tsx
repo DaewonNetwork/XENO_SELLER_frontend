@@ -6,39 +6,47 @@ import IconShared from "./IconShared";
 import { useRecoilState } from "recoil";
 import { detailImageState, imagesState } from "../stores/PreviewAtom";
 import { ProductImageInfoType } from "@/(FSD)/features/product/ui/ProductColorUpdateForm";
-import { base64toBlob } from "../uitll/base64toBlob";
+import { fetchImageToBlob } from "../uitll/base64toBlob";
+import { isUrlState } from "../stores/ProductAtom";
+
 
 interface FileInputSharedProps extends ButtonProps {
     inputId: string;
     setFile: any;
     children?: ReactNode;
     height?: number;
-    image?: ProductImageInfoType;
+    url?: string;
     file?: File | null;
+    blockIdx: number
+    index: number
 }
 
 
 
-const FileDetailImageInputShared = ({ inputId, setFile, height = 160, file }: FileInputSharedProps) => {
+const FileDetailImageInputShared = ({ inputId, setFile, height = 160, url, file, blockIdx, index }: FileInputSharedProps) => {
     const [preview, setPreview] = useState<string | null>(null);
-    const [detailImage, setDetailImage] = useRecoilState(detailImageState);
     const inputRef = useRef<HTMLInputElement>(null);
+    const [isUrl, setIsUrl] = useRecoilState(isUrlState)
 
     useEffect(() => {
-    
-        if (detailImage && !file && detailImage.productColorImage && detailImage.filename) {
-            setPreview(`data:image/jpeg;base64,${detailImage.productColorImage}`);
-            const base64String = `data:image/jpeg;base64,${detailImage.productColorImage}`;
-            const base64Data = base64String.split(',')[1];
-            const mimeType = 'image/jpeg';
-            const blob = base64toBlob(base64Data, mimeType);
-          
-            const newFile = new File([blob], detailImage.filename, { type: mimeType });
 
-            setFile(newFile);
+        if (url && !file) {
+            setPreview(url);
+
+            const mimeType = 'image/jpeg';
+            fetchImageToBlob(url)
+                .then(blob => {
+                    // Blob 처리
+                    const newFile = new File([blob], url, { type: mimeType });
+                    setFile(newFile);
+                
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
 
         }
-        if ((!detailImage.filename && file) || (detailImage && file && detailImage.productColorImage && detailImage.filename)) {
+        if ((!url && file) || (url && file)) {
             const reader = new FileReader();
             reader.onloadend = () => {
                 const result = reader.result as string;
@@ -47,9 +55,9 @@ const FileDetailImageInputShared = ({ inputId, setFile, height = 160, file }: Fi
             reader.readAsDataURL(file);
             setFile(file);
         }
-       
-      
-    }, [ file, setFile, setPreview]);
+
+
+    }, [file, setFile, setPreview]);
 
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,12 +76,15 @@ const FileDetailImageInputShared = ({ inputId, setFile, height = 160, file }: Fi
     const handleDeletePreview = () => {
         setPreview(null);
         setFile(null);
-        setDetailImage({
-            imageId: 1,
-            productColorImage: null,
-            filename: null,
+        setIsUrl(prev => {
+            // 배열의 깊은 복사
+            const newStates = prev.map((block, idx) => 
+                idx === blockIdx 
+                    ? [...block.slice(0, index), false, ...block.slice(index + 1)] 
+                    : block
+            );
+            return newStates;
         });
-
         if (inputRef.current) {
             inputRef.current.value = "";
             inputRef.current.dispatchEvent(new Event("change", { bubbles: true }));

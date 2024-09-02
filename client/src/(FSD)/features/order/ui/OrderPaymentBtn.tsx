@@ -14,7 +14,7 @@ import { useUserRead } from "@/(FSD)/entities/user/api/useUserRead";
 
 export interface ProductOrderType {
     orderPayId: string;
-    productColorSizeId?: number;
+    productOptionId?: number;
     req: string;
     quantity: number;
     amount: number;
@@ -78,7 +78,7 @@ const OrderPaymentBtn = ({ productList }: OrderPaymentBtnProps) => {
 
     const OrderInfoList: ProductOrderType[] = productList.map(product => ({
         orderPayId: orderId,
-        productColorSizeId: product.productColorSizeId,
+        productOptionId: product.productOptionId,
         req: req,
         quantity: product.quantity,
         amount: product.price,
@@ -88,6 +88,7 @@ const OrderPaymentBtn = ({ productList }: OrderPaymentBtnProps) => {
 
     const handleClick = async () => {
        
+        // mutate(OrderInfoList);
 
 
         const customerKey = generateCustomerKey();

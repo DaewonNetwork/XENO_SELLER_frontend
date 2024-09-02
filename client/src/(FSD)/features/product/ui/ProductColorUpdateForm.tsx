@@ -32,7 +32,7 @@ interface SizeStocksType {
 
 export interface ProductImageInfoType {
     imageId: number;
-    productColorImage: Uint8Array | null;
+    productImage: string | null;
     filename: string | null;
 }
 
