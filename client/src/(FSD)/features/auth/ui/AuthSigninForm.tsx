@@ -40,17 +40,17 @@ const AuthSigninForm = () => {
     const router = useRouter();
 
     const onSuccess = (data: any) => {
-        const [accessToken, setAccessToken] = useState<string | null>(null);
+ 
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            // 클라이언트 사이드에서만 실행됨
-            const token = localStorage.getItem("access_token");
-            setAccessToken(token);
-        }
-    }, []);
+
+            if (typeof window !== 'undefined') {
+       
+            
         localStorage.setItem("access_token", data.accessToken);
-        localStorage.setItem("refresh_token", data.refreshToken);        
+        localStorage.setItem("refresh_token", data.refreshToken);   
+            }
+
+     
         
         setIsLoggedIn(true);
 
