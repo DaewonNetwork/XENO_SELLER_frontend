@@ -88,7 +88,7 @@ const OrderPaymentBtn = ({ productList }: OrderPaymentBtnProps) => {
 
     const handleClick = async () => {
        
-        mutate(OrderInfoList);
+        // mutate(OrderInfoList);
 
 
         const customerKey = generateCustomerKey();
@@ -114,7 +114,7 @@ const OrderPaymentBtn = ({ productList }: OrderPaymentBtnProps) => {
             },
         }).then(data => {
 
-            // mutate(OrderInfoList);
+            mutate(OrderInfoList);
 
         }).catch((error: any) => {
             console.log("결제오류", error)
