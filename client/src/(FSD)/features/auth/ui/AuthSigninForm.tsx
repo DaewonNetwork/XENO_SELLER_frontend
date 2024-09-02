@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormInputShared from "@/(FSD)/shareds/ui/FormInputShared";
 import PasswordInputShared from "@/(FSD)/shareds/ui/PasswordInputShared";
 import { Button } from "@nextui-org/button";
@@ -40,16 +40,21 @@ const AuthSigninForm = () => {
     const router = useRouter();
 
     const onSuccess = (data: any) => {
-     
+        const [accessToken, setAccessToken] = useState<string | null>(null);
+
+    useEffect(() => {
         if (typeof window !== 'undefined') {
-   
+            // 클라이언트 사이드에서만 실행됨
+            const token = localStorage.getItem("access_token");
+            setAccessToken(token);
+        }
+    }, []);
         localStorage.setItem("access_token", data.accessToken);
         localStorage.setItem("refresh_token", data.refreshToken);        
         
         setIsLoggedIn(true);
 
         router.push("/");
-        }
     }
 
     const onError = () => {
