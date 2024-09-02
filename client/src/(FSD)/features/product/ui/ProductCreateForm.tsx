@@ -72,7 +72,7 @@ const ProductCreateForm = () => {
             const productNumber = getValues(`productNumber-${i}`); // 각 블록의 productNumber 가져오기
 
             formData.append("productNumber", productNumber);
-           
+
 
             productImages[i]?.forEach((image: File) => {
                 if (image) {
@@ -110,15 +110,8 @@ const ProductCreateForm = () => {
         }
     };
 
-    const [accessToken, setAccessToken] = useState<string | null>(null);
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            // 클라이언트 사이드에서만 실행됨
-            const token = localStorage.getItem("access_token");
-            setAccessToken(token);
-        }
-    }, []);
+    const accessToken = localStorage.getItem("access_token");
 
     const addFormBlock = () => {
         setFormBlocks([...formBlocks, formBlocks.length + 1]);
@@ -157,7 +150,7 @@ const ProductCreateForm = () => {
         }
     };
 
-   
+
 
 
     return (
@@ -234,7 +227,7 @@ const ProductCreateForm = () => {
             <Button
                 // isDisabled={(!isValid)}
                 fullWidth size={"lg"} type={"button"} variant={"ghost"}
-                onClick={() => newDownload()} 
+                onClick={() => newDownload()}
             >
                 새 엑셀 템플릿 다운받기
             </Button>

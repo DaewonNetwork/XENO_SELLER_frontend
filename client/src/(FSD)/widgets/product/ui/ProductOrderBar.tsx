@@ -224,13 +224,13 @@ const ProductOrderBar = ({ orderBar, parentRefetch }: { orderBar: ProductOrderBa
             setNewProducts(newProducts1)
 
             setProducts([])
-            const [accessToken, setAccessToken] = useState<string | null>(null);
+      
 
             if (newProducts1.length > 0) {
-                if (typeof window !== 'undefined') {
+              
                 localStorage.setItem("newProducts", JSON.stringify(newProducts1));
                 router.push("/order");
-                }
+                
             }
         }
     };

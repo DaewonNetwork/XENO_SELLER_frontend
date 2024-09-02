@@ -4,23 +4,17 @@ import { useEffect, useState } from "react";
 import { apiPath } from "@/(FSD)/shareds/fetch/APIpath";
 
 const productUpdateFetch = async (data: any) => {
-    const [accessToken, setAccessToken] = useState<string | null>(null);
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            // 클라이언트 사이드에서만 실행됨
-            const token = localStorage.getItem("access_token");
-            setAccessToken(token);
-        }
-    }, []);
+    const accessToken = localStorage.getItem("access_token");
+
 
     const response = await fetch(`${apiPath}/api/product/update`, {
         method: "PUT",
         headers: {
             Authorization: `Bearer ${accessToken}`,
-             'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         },
-        body:  JSON.stringify(data),
+        body: JSON.stringify(data),
     });
 
     if (!response.ok) {

@@ -30,16 +30,7 @@ const ProductInputShippingContainer = () => {
         }
     };
 
-    const [accessToken, setAccessToken] = useState<string | null>(null);
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            // 클라이언트 사이드에서만 실행됨
-            const token = localStorage.getItem("access_token");
-            setAccessToken(token);
-        }
-    }, []);
-
+    const accessToken = localStorage.getItem("access_token");
 
     const handleExcelUpload = async () => {
         if (!excelFile) {
@@ -80,31 +71,31 @@ const ProductInputShippingContainer = () => {
 
     return (
         <>
-              <div>
-            <Button
-                // isDisabled={(!isValid)}
-                fullWidth size={"lg"} type={"button"} variant={"ghost"}
-                onClick={() => paymentCompletedOrderDownload()}
-                style={{ marginBottom: '16px' }}  // 버튼 아래에 여백 추가
-            >
-                결제 완료 된 주문 목록 다운 받기
-            </Button>
-   
-            <input
-                type="file"
-                accept=".xlsx, .xls"
-                onChange={handleExcelFileChange}
-                style={{ display: 'block', marginBottom: '16px' }}  // 입력 필드 아래에 여백 추가
-            />
-            
-            <Button
-                isDisabled={!excelFile}
-                fullWidth size={"lg"} type={"button"} variant={"ghost"}
-                onClick={handleExcelUpload}
-            >
-                엑셀 업로드하기
-            </Button>
-        </div>
+            <div>
+                <Button
+                    // isDisabled={(!isValid)}
+                    fullWidth size={"lg"} type={"button"} variant={"ghost"}
+                    onClick={() => paymentCompletedOrderDownload()}
+                    style={{ marginBottom: '16px' }}  // 버튼 아래에 여백 추가
+                >
+                    결제 완료 된 주문 목록 다운 받기
+                </Button>
+
+                <input
+                    type="file"
+                    accept=".xlsx, .xls"
+                    onChange={handleExcelFileChange}
+                    style={{ display: 'block', marginBottom: '16px' }}  // 입력 필드 아래에 여백 추가
+                />
+
+                <Button
+                    isDisabled={!excelFile}
+                    fullWidth size={"lg"} type={"button"} variant={"ghost"}
+                    onClick={handleExcelUpload}
+                >
+                    엑셀 업로드하기
+                </Button>
+            </div>
         </>
     );
 };
