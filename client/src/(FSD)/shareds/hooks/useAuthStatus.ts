@@ -21,14 +21,14 @@ const useAuthStatus = () => {
         }
     }, [data, isLoggedIn, set]);
 
-    useEffect(() => {
-        if (isError) {
-            if (typeof window !== 'undefined') {
-                localStorage.removeItem("access_token");
-                localStorage.removeItem("refresh_token");
-            }
-        }
-    }, [isError]);
+    // useEffect(() => {
+    //     if (isError) {
+    //         if (typeof window !== 'undefined') {
+    //             localStorage.removeItem("access_token");
+    //             localStorage.removeItem("refresh_token");
+    //         }
+    //     }
+    // }, [isError]);
 
     useEffect(() => {
         if (typeof window !== 'undefined' && accessToken) {
