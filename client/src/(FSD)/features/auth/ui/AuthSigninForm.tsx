@@ -40,12 +40,16 @@ const AuthSigninForm = () => {
     const router = useRouter();
 
     const onSuccess = (data: any) => {
+     
+        if (typeof window !== 'undefined') {
+   
         localStorage.setItem("access_token", data.accessToken);
         localStorage.setItem("refresh_token", data.refreshToken);        
         
         setIsLoggedIn(true);
 
         router.push("/");
+        }
     }
 
     const onError = () => {

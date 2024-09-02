@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { useRecoilState } from "recoil";
 import { productsState } from "@/(FSD)/shareds/stores/ProductAtom";
 import { OrderProductInfoType } from "@/(FSD)/shareds/types/product/OrderProductInfo.type";
@@ -15,11 +15,14 @@ import AppInner from "../../app/ui/AppInner";
 const OrderCompleteList = () => {
     const [isOpen, handleOpen] = useReducer((state) => !state, true);
     const [newProducts, setNewProducts] = useRecoilState<OrderProductInfoType[]>(productsState);
+    const [accessToken, setAccessToken] = useState<string | null>(null);
 
+  
     const router = useRouter();
     useEffect(() => {
+        if (typeof window !== 'undefined') {
         const storedProducts = localStorage.getItem("newProducts");
-
+        
         console.log(storedProducts)
         if (storedProducts) {
             setNewProducts(JSON.parse(storedProducts));
@@ -27,6 +30,8 @@ const OrderCompleteList = () => {
             alert("잘못된 접근입니다.");
             router.push("/");
         }
+        }
+
     }, []);
 
     return (

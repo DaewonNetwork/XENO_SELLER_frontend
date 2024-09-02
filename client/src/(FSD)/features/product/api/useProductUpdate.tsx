@@ -1,8 +1,17 @@
 import { useMutation } from "@tanstack/react-query";
 import { MutationType } from "../../types/mutation.type";
+import { useEffect, useState } from "react";
 
 const productUpdateFetch = async (data: any) => {
-    const accessToken = localStorage.getItem("access_token");
+    const [accessToken, setAccessToken] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            // 클라이언트 사이드에서만 실행됨
+            const token = localStorage.getItem("access_token");
+            setAccessToken(token);
+        }
+    }, []);
 
     const response = await fetch("http://localhost:8090/api/product/update", {
         method: "PUT",

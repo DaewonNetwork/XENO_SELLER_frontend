@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AppInner from "./AppInner";
 import AppContainer from "./AppContainer";
 import styles from "@/(FSD)/shareds/styles/AppStyle.module.scss";
@@ -11,7 +11,15 @@ import IconShared from "@/(FSD)/shareds/ui/IconShared";
 const AppNav = () => {
 
 
-    const accessToken = localStorage.getItem("access_token")!;
+    const [accessToken, setAccessToken] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            // 클라이언트 사이드에서만 실행됨
+            const token = localStorage.getItem("access_token");
+            setAccessToken(token);
+        }
+    }, []);
     return (
         <nav className={`border-default-100 border-t-small ${styles.nav}`}>
             <AppContainer>

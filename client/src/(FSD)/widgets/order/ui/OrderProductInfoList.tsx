@@ -16,8 +16,10 @@ const OrderProductInfoList = () => {
     const [isOpen, handleOpen] = useReducer((state) => !state, true);
     const [newProducts, setNewProducts] = useRecoilState<OrderProductInfoType[]>(productsState);
 
+
     const router = useRouter();
     useEffect(() => {
+        if (typeof window !== 'undefined') {
         const storedProducts = localStorage.getItem("newProducts");
 
         console.log(storedProducts)
@@ -27,6 +29,7 @@ const OrderProductInfoList = () => {
             alert("잘못된 접근입니다.");
             router.push("/");
         }
+    }
     }, []);
 
     return (

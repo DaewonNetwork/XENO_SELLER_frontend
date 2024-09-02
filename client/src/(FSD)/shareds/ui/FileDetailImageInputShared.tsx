@@ -5,7 +5,6 @@ import Image from "next/image";
 import IconShared from "./IconShared";
 import { useRecoilState } from "recoil";
 import { detailImageState, imagesState } from "../stores/PreviewAtom";
-import { ProductImageInfoType } from "@/(FSD)/features/product/ui/ProductColorUpdateForm";
 import { fetchImageToBlob } from "../uitll/base64toBlob";
 import { isUrlState } from "../stores/ProductAtom";
 

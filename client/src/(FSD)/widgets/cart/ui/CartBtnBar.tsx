@@ -35,8 +35,11 @@ const CartBtnBar = () => {
     const handleClick = () => {
 
         console.log(cart)
-        localStorage.setItem("newProducts", JSON.stringify(convertCartToCartItem(cart)));
+        if (typeof window !== 'undefined') {
+            localStorage.setItem("newProducts", JSON.stringify(convertCartToCartItem(cart)));
         router.push("/order");
+        }
+       
             }
 
     return (

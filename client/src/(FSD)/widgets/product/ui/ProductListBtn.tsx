@@ -55,7 +55,9 @@ const ProductListBtn = () => {
                             <ModalBody>
 
 
+
                                 {productInfoList.length > 0 ? (
+                                    // @ts-ignore
                                     <Select selectionMode="multiple" label="최대 5개까지 선택 가능해요." selectedKeys={values} onSelectionChange={setValues} >
                                         {productInfoList.map(product => (
                                             <SelectItem key={product.productNumber}

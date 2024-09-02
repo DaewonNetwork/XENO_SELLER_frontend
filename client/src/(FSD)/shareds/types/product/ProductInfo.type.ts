@@ -1,7 +1,7 @@
 
 export interface ProductInfoType {
   productId: number;
-  productId: number;
+
   otherproductId: number[];
   name: string;
   brandName: string;
