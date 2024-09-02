@@ -88,7 +88,7 @@ const OrderPaymentBtn = ({ productList }: OrderPaymentBtnProps) => {
 
     const handleClick = async () => {
        
-        mutate(OrderInfoList);
+        // mutate(OrderInfoList);
 
 
         const customerKey = generateCustomerKey();
