@@ -5,15 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 const userReadFetch = async () => {
-    const [accessToken, setAccessToken] = useState<string | null>(null);
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            // 클라이언트 사이드에서만 실행됨
-            const token = localStorage.getItem("access_token");
-            setAccessToken(token);
-        }
-    }, []);
+
+    const accessToken = localStorage.getItem("access_token");
+
 
     const response = await fetch(`${apiPath}/api/user`, {
         method: "GET",
