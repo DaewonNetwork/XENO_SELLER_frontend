@@ -2,17 +2,17 @@
 
 import useFetchData from "@/(FSD)/shareds/fetch/useFetchData"
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ALL_PRODUCTS_QUERY_KEY } from "./useGetAllProducts";
+import { ALL_USERS_QUERY_KEY } from "./useGetAllUsers";
 
-export const useDeleteProduct = () => {
+export const useDeleteDependsUsers = () => {
     const fetchData = useFetchData();
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (productId: number) => {
+        mutationFn: async (userId: number) => {
             try {
                 const response = await fetchData({
-                    path: `/manager/brand/products/${productId}`,
+                    path: `/manager/brand/users/${userId}`,
                     method: 'DELETE',
                     isAuthRequired: true
                 });
@@ -25,7 +25,7 @@ export const useDeleteProduct = () => {
             }
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ALL_PRODUCTS_QUERY_KEY });
+            queryClient.invalidateQueries({ queryKey: ALL_USERS_QUERY_KEY });
         },
     });
 };

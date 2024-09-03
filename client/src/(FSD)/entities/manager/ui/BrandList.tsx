@@ -2,16 +2,19 @@
 
 import React, { useState, useCallback } from 'react';
 import { useGetAllBrand, ALL_BRAND_QUERY_KEY } from '../api/useGetAllBrand';
+import { useGetAllUsers, ALL_USERS_QUERY_KEY } from '@/(FSD)/entities/manager/api/useGetAllUsers';
 import styles from '@/(FSD)/shareds/styles/UserList.module.scss';
 import { useQueryClient } from '@tanstack/react-query';
 import LinkBtnShared from '@/(FSD)/shareds/ui/LinkBtnShared';
 import { useDeleteBrand } from '../api/useDeleteBrand';
+import { useDeleteDependsUsers } from '../api/useDeleteBrandDependsUsers';
 
 const BrandList = () => {
     const queryClient = useQueryClient();
     const { data: brands, isLoading, error, refetch } = useGetAllBrand();
     const [expandedBrands, setExpandedBrands] = useState<number[]>([]);
     const deleteBrand = useDeleteBrand();
+    const deleteUser = useDeleteDependsUsers();
 
     const toggleBrand = useCallback((brandId: number) => {
         setExpandedBrands(prev => 
@@ -33,6 +36,24 @@ const BrandList = () => {
             }
         }
     }, [deleteBrand, refetch]);
+
+    const handleDeleteUser = useCallback(async (userId: number) => {
+        if (window.confirm('정말로 이 사용자를 삭제하시겠습니까?')) {
+            try {
+                await deleteUser.mutateAsync(userId);
+                alert('사용자가 성공적으로 삭제되었습니다.');
+                queryClient.invalidateQueries({ queryKey: [ALL_USERS_QUERY_KEY] });
+                queryClient.invalidateQueries({ queryKey: [ALL_BRAND_QUERY_KEY] });
+                // 브랜드 목록 리프레시
+                refetch();
+            } catch (error) {
+                console.error('사용자 삭제 중 오류 발생: ', error);
+                alert('사용자 삭제 중 오류가 발생했습니다.');
+            }
+        } else {
+            alert('관리자가 취소하였습니다.');
+        }
+    }, [deleteUser, queryClient, refetch]);
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
@@ -84,6 +105,7 @@ const BrandList = () => {
                                                     <th>User ID</th>
                                                     <th>이메일</th>
                                                     <th>이름</th>
+                                                    <th>액션</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -92,6 +114,11 @@ const BrandList = () => {
                                                         <td>{user.userId}</td>
                                                         <td>{user.email}</td>
                                                         <td>{user.name}</td>
+                                                        <td>
+                                                            <button className={styles.deleteButton} onClick={() => handleDeleteUser(user.userId)}>
+                                                                삭제
+                                                            </button>
+                                                        </td>
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -105,7 +132,7 @@ const BrandList = () => {
             </table>
             <div className={styles.buttonContainer}>
                 <LinkBtnShared 
-                    href="/manager/users" 
+                    href="/manager/brand/products" 
                     variant="solid" 
                     color="primary"
                     className={styles.sellerManagementButton}
