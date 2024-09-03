@@ -9,14 +9,17 @@ import { useQueryClient } from '@tanstack/react-query';
 import PointAdjustmentModal from './PointAdjustmentModal';
 import LevelAdjustmentModal from './LevelAdjustmentModal';
 import LinkBtnShared from '@/(FSD)/shareds/ui/LinkBtnShared';
+import PointModal from './PointModal';
+import { useDisclosure } from '@nextui-org/modal';
 
 const UserList = () => {
     const queryClient = useQueryClient();
     const { data, isLoading, error, refetch } = useGetAllUsers();
     const deleteUser = useDeleteUser();
-    const [selectedUser, setSelectedUser] = useState<UserCustomerInfo | undefined>(undefined);
-    const [isPointModalOpen, setIsPointModalOpen] = useState(false);
-    const [isLevelModalOpen, setIsLevelModalOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<UserCustomerInfo>();
+
+
+    const { isOpen: pointModalIsOpen, onOpen: pointModalOnOpen, onOpenChange: pointModalOnOpenChange } = useDisclosure();
 
     const handleDeleteUser = useCallback(async (userId: number) => {
         if (window.confirm('정말로 이 사용자를 삭제하시겠습니까?')) {
@@ -34,8 +37,6 @@ const UserList = () => {
     }, [deleteUser, queryClient]);
 
     const handleModalClose = useCallback(() => {
-        setIsPointModalOpen(false);
-        setIsLevelModalOpen(false);
         setSelectedUser(undefined);
         refetch();
     }, [refetch]);
@@ -48,95 +49,77 @@ const UserList = () => {
 
     return (
         <>
-                {!isLoading && (
-                    <div className={styles.tableContainer}>
-                        <table className={styles.userTable}>
-                            <thead>
-                                <tr>
-                                    <th>User ID</th>
-                                    <th>Email</th>
-                                    <th>이름</th>
-                                    <th>전화번호</th>
-                                    <th>주소</th>
-                                    <th>권한</th>
-                                    <th>적립금</th>
-                                    <th>등급</th>
-                                    <th>액션</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data?.map((user) => (
-                                    <tr key={user.userId}>
-                                        <td>{user.userId}</td>
-                                        <td>{user.email}</td>
-                                        <td>{user.name}</td>
-                                        <td>{user.phoneNumber}</td>
-                                        <td>{user.address}</td>
-                                        <td>{user.roles.join(', ')}</td>
-                                        <td>
-                                            {user.point || '-'}
-                                            <button
-                                                className={styles.actionButton}
-                                                onClick={() => {
-                                                    setSelectedUser(user);
-                                                    setIsPointModalOpen(true);
-                                                }}
-                                            >
-                                                적립금 수정
-                                            </button>
-                                        </td>
-                                        <td>
-                                            {user.level}
-                                            <button
-                                                className={styles.actionButton}
-                                                onClick={() => {
-                                                    setSelectedUser(user);
-                                                    setIsLevelModalOpen(true);
-                                                }}
-                                            >
-                                                등급 수정
-                                            </button>
-                                        </td>
-                                        <td>
-                                            <button
-                                                className={styles.deleteButton}
-                                                onClick={() => handleDeleteUser(user.userId)}
-                                            >
-                                                삭제
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        <div className={styles.buttonContainer}>
-                            <LinkBtnShared 
-                                href="/manager/brand" 
-                                variant="solid" 
-                                color="primary"
-                                className={styles.sellerManagementButton}
-                            >
-                                판매사 관리
-                            </LinkBtnShared>
-                        </div>
-                        {selectedUser && (
-                            <>
-                                <PointAdjustmentModal
-                                    isOpen={isPointModalOpen}
-                                    onClose={handleModalClose}
-                                    onUpdate={handleUpdate}
-                                    user={selectedUser}
-                                />
-                                <LevelAdjustmentModal
-                                    isOpen={isLevelModalOpen}
-                                    onClose={handleModalClose}
-                                    onUpdate={handleUpdate}
-                                    user={selectedUser}
-                                />
-                            </>
-                        )}
-                    </div>
-                )}
+            <div className={styles.tableContainer}>
+                <table className={styles.userTable}>
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Email</th>
+                            <th>이름</th>
+                            <th>전화번호</th>
+                            <th>주소</th>
+                            <th>권한</th>
+                            <th>적립금</th>
+                            <th>등급</th>
+                            <th>액션</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data?.map((user) => (
+                            <tr key={user.userId}>
+                                <td>{user.userId}</td>
+                                <td>{user.email}</td>
+                                <td>{user.name}</td>
+                                <td>{user.phoneNumber}</td>
+                                <td>{user.address}</td>
+                                <td>{user.roles.join(', ')}</td>
+                                <td>
+                                    {user.point || '-'}
+                                    <button
+                                        className={styles.actionButton}
+                                        onClick={() => {
+                                            setSelectedUser(user);
+                                            pointModalOnOpen();
+                                        }}
+                                    >
+                                        적립금 수정
+                                    </button>
+                                </td>
+                                <td>
+                                    {user.level}
+                                    <button
+                                        className={styles.actionButton}
+                                        onClick={() => {
+                                            setSelectedUser(user);
+                                        }}
+                                    >
+                                        등급 수정
+                                    </button>
+                                </td>
+                                <td>
+                                    <button
+                                        className={styles.deleteButton}
+                                        onClick={() => handleDeleteUser(user.userId)}
+                                    >
+                                        삭제
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <div className={styles.buttonContainer}>
+                    <LinkBtnShared
+                        href="/manager/brand"
+                        variant="solid"
+                        color="primary"
+                        className={styles.sellerManagementButton}
+                    >
+                        판매사 관리
+                    </LinkBtnShared>
+                </div>
+            </div>
+            {selectedUser && <PointModal isOpen={pointModalIsOpen} onOpenChange={pointModalOnOpenChange} user={selectedUser} />}
         </>
     );
 };

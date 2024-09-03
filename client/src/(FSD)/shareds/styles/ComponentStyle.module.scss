@@ -1,7 +1,6 @@
 $content_pad_top: 60px;
 $nav_height: 54px;
 $form_height: 58px;
-$width: 520px;
 
 .root {
     width: 100%;
@@ -10,8 +9,8 @@ $width: 520px;
     justify-content: center;
     
     .root_box {
+        width: 100%;
         position: relative;
-        width: $width;
         height: 100%;
 
         overflow-y: scroll;
@@ -31,19 +30,19 @@ $width: 520px;
 }
 
 .fixed_top_bar {
-    width: $width;
+    width: 100%;
     display: block;
     position: fixed;
     top: 0;
-    z-index: 999;
+    z-index: 49;
 }
 
 .fixed_btm_bar {
-    width: $width;
+    width: 100%;
     display: block;
     position: fixed;
     bottom: 0;
-    z-index: 999;
+    z-index: 49;
 }
 
 

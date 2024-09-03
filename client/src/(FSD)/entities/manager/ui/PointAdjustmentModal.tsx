@@ -27,7 +27,7 @@ const PointAdjustmentModal = ({ isOpen, onClose, onUpdate, user }: PointAdjustme
             alert('적립금이 성공적으로 업데이트되었습니다.');
             // queryClient.invalidateQueries({ queryKey: [ALL_USERS_QUERY_KEY] });
             onUpdate();
-            // onClose();
+            onClose();
         } catch (error) {
             console.error('적립금 업데이트 중 오류 발생:', error);
             if (error instanceof Error) {
