@@ -8,7 +8,7 @@ export const useGetAllUsers = () => {
     const fetchData = useFetchData();
 
     return useQuery<UserCustomerInfo[]>({
-        queryKey: ALL_USERS_QUERY_KEY,
+        queryKey: ["all_users"],
         queryFn: () => fetchData({ path: "/manager", isAuthRequired: true }),
     });
 };

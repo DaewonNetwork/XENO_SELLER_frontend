@@ -37,7 +37,7 @@ const BrandList = () => {
         }
     }, [deleteBrand, refetch]);
 
-    const handleDeleteUser = useCallback(async (brandId: number, userId: number) => {
+    const handleDeleteUser = useCallback(async (userId: number, brandId: number) => {
         if (window.confirm('정말로 이 사용자를 삭제하시겠습니까?')) {
             try {
                 await deleteUser.mutateAsync(userId);
@@ -132,7 +132,7 @@ const BrandList = () => {
             </table>
             <div className={styles.buttonContainer}>
                 <LinkBtnShared 
-                    href="/manager/users" 
+                    href="/manager/brand/products" 
                     variant="solid" 
                     color="primary"
                     className={styles.sellerManagementButton}
