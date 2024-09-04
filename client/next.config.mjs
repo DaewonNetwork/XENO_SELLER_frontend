@@ -12,6 +12,9 @@ const nextConfig = {
         locales: ["ko-KR"],
         defaultLocale: "ko-KR",
     },
+    images: {
+        domains: ['xenoimages12341234.s3.ap-northeast-2.amazonaws.com'],
+      },
 };
 
 export default nextConfig;

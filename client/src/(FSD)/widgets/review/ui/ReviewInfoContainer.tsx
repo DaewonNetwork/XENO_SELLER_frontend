@@ -25,7 +25,7 @@ const ReviewInfoContainer = () => {
 
     const reviewInfo: ReviewInfoType = data;
 
-    const { data: productData, refetch } = useProductColorCardRead(reviewInfo?.productColorId);
+    const { data: productData, refetch } = useProductColorCardRead(reviewInfo?.productId);
 
 
     const product: ProductType | undefined = productData;
@@ -42,7 +42,7 @@ const ReviewInfoContainer = () => {
         <>
             <div className={styles.order_product_info}>
                 <div className={styles.info_image}>
-                    <img className="" src={`data:image/jpeg;base64,${product.productImage}`} onClick={() => router.push(`/products/${product.productColorId}`)} />
+                    <img className="" src={`data:image/jpeg;base64,${product.productImage}`} onClick={() => router.push(`/products/${product.productId}`)} />
                 </div>
                 <div className={styles.info_text}>
                     <div className={styles.text_top}>

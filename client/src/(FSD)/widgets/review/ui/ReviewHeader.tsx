@@ -13,6 +13,7 @@
 //     name: string;
 //     color: string;
 //     productColorId: number;
+//     productId: number;
 
 // }
 

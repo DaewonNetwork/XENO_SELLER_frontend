@@ -9,12 +9,12 @@ import Slider from "react-slick";
 import ProductCard from "@/(FSD)/entities/product/ui/ProductCard";
 
 
-interface ProductCardSlideListProps {
+interface ProductCardSlideListType {
     productList: ProductType[];
     isRank?: boolean;
 }
 
-const ProductCardSlideList = ({ productList, isRank = false }: ProductCardSlideListProps) => {
+const ProductCardSlideList = ({ productList, isRank = false }: ProductCardSlideListType) => {
     const settings = {
         dots: false,
         infinite: false,
@@ -24,6 +24,7 @@ const ProductCardSlideList = ({ productList, isRank = false }: ProductCardSlideL
         arrows: false,
     };
 
+    console.log(productList)
     if((!productList)) return <></>;
 
     return (
@@ -31,8 +32,8 @@ const ProductCardSlideList = ({ productList, isRank = false }: ProductCardSlideL
             <Slider {...settings}>
                 {
                     productList.map((product, index) => (
-                        <React.Fragment key={product.productColorId}>
-                            <ProductCard product={product} likeBtn={<ProductLikeBtn isLike={product.like} productColorId={product.productColorId} />} isRank={isRank} rank={index + 1} />
+                        <React.Fragment key={product.productId}>
+                            <ProductCard product={product} likeBtn={<ProductLikeBtn isLike={product.like} productId={product.productId} />} isRank={isRank} rank={index + 1} />
                         </React.Fragment>
                     ))
                 }

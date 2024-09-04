@@ -1,19 +1,27 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { FetchType } from "../types/FetchData.type";
+import { apiPath } from "./APIpath";
 
 const useFetchData = () => {
-    let accessToken = null;
-    
-    if (typeof window !== "undefined") {
-        accessToken = localStorage.getItem("access_token");
-    }
+
+    const [accessToken, setAccessToken] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            // 클라이언트 사이드에서만 실행됨
+            const token = localStorage.getItem("access_token");
+            setAccessToken(token);
+        }
+    }, []);
+
 
     const fetchData = async ({ path, method = "GET", contentType = "application/json", isAuthRequired = false, isNotAuthRequired = false, body }: FetchType) => {
         let response = null;
-        
+
         if ((!isNotAuthRequired) || (isAuthRequired)) {
-            response = await fetch(`http://localhost:8090/api${path}`, {
+            response = await fetch(`${apiPath}/api${path}`, {
                 method: method,
                 headers: {
                     "Content-Type": contentType,
@@ -22,7 +30,7 @@ const useFetchData = () => {
                 body: JSON.stringify(body)
             });
         } else {
-            response = await fetch(`http://localhost:8090${path}`, {
+            response = await fetch(`${apiPath}${path}`, {
                 method: method,
                 headers: {
                     "Content-Type": contentType,
@@ -37,7 +45,7 @@ const useFetchData = () => {
         }
 
         const data = await response.json();
-        
+
         return data;
     };
 

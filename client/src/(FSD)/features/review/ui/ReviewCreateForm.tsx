@@ -12,6 +12,7 @@ import FileInputShared from "@/(FSD)/shareds/ui/FileInputShared";
 import { useReviewCreate } from "../api/useReviewCreate";
 import { useParams, useRouter } from "next/navigation";
 import { useRecoilValue } from "recoil";
+import { isLoggedInState} from "@/(FSD)/shareds/stores/UserAtom";
 import AppInner from "@/(FSD)/widgets/app/ui/AppInner";
 import StarShared from "@/(FSD)/shareds/ui/StarShared";
 
@@ -57,7 +58,11 @@ const ReviewCreateForm = () => {
 
         mutate(formData);
     }
-    
+
+    const isLoggedIn  = useRecoilValue(isLoggedInState);
+
+    if(!isLoggedIn) return <></>;
+
     return (
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             <AppInner>
