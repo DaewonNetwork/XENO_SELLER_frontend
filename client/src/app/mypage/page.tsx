@@ -1,11 +1,19 @@
-import React from "react";
+
+import AppInner from '@/(FSD)/widgets/app/ui/AppInner'
+import AppSection from '@/(FSD)/widgets/app/ui/AppSection'
+import SellerProFileContainer from '@/(FSD)/widgets/seller/ui/SellerProFileContainer'
+
+import React from 'react'
 
 const Page = () => {
-    return (
-        <div>
 
-        </div>
+    return (
+        <AppSection>
+            <AppInner>
+                <SellerProFileContainer/>
+            </AppInner>
+        </AppSection>
     )
 }
 
-export default Page;
+export default Page

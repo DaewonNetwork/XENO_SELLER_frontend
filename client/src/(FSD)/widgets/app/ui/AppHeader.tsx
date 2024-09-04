@@ -5,7 +5,7 @@ import IconShared from "@/(FSD)/shareds/ui/IconShared";
 import LinkBtnShared from "@/(FSD)/shareds/ui/LinkBtnShared";
 import AppInner from "./AppInner";
 import AppContainer from "./AppContainer";
-import ProductCart from "@/(FSD)/entities/product/ui/ProductCart";
+
 
 const AppHeader = () => {
     return (
@@ -16,7 +16,7 @@ const AppHeader = () => {
                         <LogoShared />
                         <div className={styles.buttons}>
                             <LinkBtnShared href={"/search"} size={"sm"} isIconOnly endContent={<IconShared iconSize={"md"} iconType={"search"} />} />
-                            <ProductCart />
+                          
                         </div>
                     </div>
                 </AppInner>

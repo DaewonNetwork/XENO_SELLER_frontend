@@ -1,6 +1,6 @@
 "use client"
 
-import { useProductBySellerRead } from "@/(FSD)/entities/product/api/useProductBySellerRead";
+
 import { useEffect, useState } from "react";
 import { Listbox, ListboxItem } from "@nextui-org/listbox";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,7 @@ const ProductCreateBtn = () => {
 
         <div style={{ marginBottom: "10px" }}>
 
-            <Button onClick={() => router.push('/seller/product/create')} size={"sm"}
+            <Button onClick={() => router.push('/mypage/product/create')} size={"sm"}
                 className="w-full h-[100px] bg-white border-2" radius="none"
             ><TextMediumShared>상품 등록하기</TextMediumShared></Button>
 
