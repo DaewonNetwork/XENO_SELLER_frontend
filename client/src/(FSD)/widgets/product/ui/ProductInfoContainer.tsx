@@ -5,45 +5,37 @@ import { useParams } from "next/navigation";
 import { useProductColorRead } from "../../../entities/product/api/useProductColorRead";
 import { ProductInfoType } from "@/(FSD)/shareds/types/product/ProductInfo.type";
 import ProductInfo from "@/(FSD)/widgets/product/ui/ProductInfo";
-import ProductImagesSlideList from "@/(FSD)/widgets/product/ui/ProductImagesSlideList";
+import ProductImageSlideList from "@/(FSD)/widgets/product/ui/ProductImageSlideList";
 import { useSetRecoilState } from "recoil";
-import { imageState, nameState, urlState } from "@/(FSD)/shareds/stores/ProductAtom";
+import { nameState } from "@/(FSD)/shareds/stores/ProductAtom";
 import ProductOtherColorImageList from "./ProductOtherColorImageList";
 import ReviewInfoList from "../../review/ui/ReviewInfoList";
 import ProductDetailImage from "./ProductDetailImage";
-import { useProductRead } from "@/(FSD)/entities/product/api/useProductRankRead";
-
 
 const ProductInfoContainer = () => {
-    const { productId } = useParams<{ productId: string }>();
-    const { data, isError, error, isPending, refetch } = useProductRead(+productId);
+    const { productColorId } = useParams<{ productColorId: string }>();
+    const { data, isError, error, isPending, refetch } = useProductColorRead(+productColorId);
 
-    const setName = useSetRecoilState(nameState)
-    const setImage = useSetRecoilState(urlState)
+    const setName = useSetRecoilState(nameState);
 
     const productInfo: ProductInfoType = data;
 
     useEffect(() => {
         console.log(productInfo)
         refetch();
-    }, [productId, data,refetch]);
+    }, [productColorId, data,refetch]);
 
     if (!productInfo) return <></>;
 
-    console.log(productInfo)
-
     setName(productInfo.name);
-    setImage(productInfo.url_1);
-    
-    const urls = [productInfo.url_1, productInfo.url_2, productInfo.url_3, productInfo.url_4, productInfo.url_5, productInfo.url_6];
 
     return (
         <>
-            <ProductImagesSlideList productImages={urls} />
+            <ProductImageSlideList productImageList={productInfo.productImages} />
             <ProductInfo product={productInfo} />
-            <ProductDetailImage url={productInfo.detail_url} />
-
-            {/* <ReviewInfoList productId={productId} /> */}
+            {productInfo.booleanColor && (<ProductOtherColorImageList />)}
+            <ProductDetailImage productColorId={productColorId} />
+            <ReviewInfoList productColorId={productColorId} />
         </>
     );
 };
