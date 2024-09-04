@@ -30,6 +30,7 @@ const CartProductInfoList = () => {
 
         
     setCart(cartProductList);
+    console.log(cartProductList)
 
     return (
         <div className={styles.cart_product_info_list}>
@@ -37,7 +38,7 @@ const CartProductInfoList = () => {
                 <AppInner>
                     {
                         cartProductList.map((cart) => (
-                            <React.Fragment key={cart.productsColorSizeId}>
+                            <React.Fragment key={cart.productOptionId}>
                                 <CartInfo cart={cart}  />
                             </React.Fragment>
                         ))

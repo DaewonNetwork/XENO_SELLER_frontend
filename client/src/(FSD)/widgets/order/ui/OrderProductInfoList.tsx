@@ -31,6 +31,7 @@ const OrderProductInfoList = () => {
         }
     }
     }, []);
+    console.log(newProducts)
 
     return (
         <div className={`bg-background ${styles.order_product_info_list}`}>

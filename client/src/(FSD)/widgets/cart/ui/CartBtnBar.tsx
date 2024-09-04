@@ -19,16 +19,17 @@ const CartBtnBar = () => {
 
     const cart = useRecoilValue(cartState);
 
+    console.log("cart",cart)
     
     const convertCartToCartItem = (cart: any[]): OrderProductInfoType[] => {
         return cart.map(item => ({
-            productOptionId: item.productsColorSizeId,
+            productOptionId: item.productOptionId,
             color: item.color,
             size: item.size,
             quantity: item.quantity,
-            price: item.amount,
+            price: item.price,
             name: item.productName,
-            image: item.productImage
+            image: item.image
         }));
     };
 

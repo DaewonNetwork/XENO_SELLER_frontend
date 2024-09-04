@@ -1,6 +1,6 @@
 export interface CartProductInfoType {
     cartId: number;
-    productsColorSizeId: number;
+    productOptionId: number;
     quantity: number;
     amount: number;
     brandName: string;

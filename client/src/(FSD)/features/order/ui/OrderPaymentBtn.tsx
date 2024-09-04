@@ -13,7 +13,7 @@ import { UserType } from "@/(FSD)/shareds/types/User.type";
 import { useUserRead } from "@/(FSD)/entities/user/api/useUserRead";
 
 export interface ProductOrderType {
-    orderPayId: string;
+    orderPayId: string | null;
     productOptionId?: number;
     req: string;
     quantity: number;
@@ -26,16 +26,12 @@ interface OrderPaymentBtnProps {
 }
 
 const OrderPaymentBtn = ({ productList }: OrderPaymentBtnProps) => {
-    const req = useRecoilValue(reqState);
+   
     const router = useRouter();
-
-    const onSuccess = (data: any) => {
-        window.location.href = '/complete'
-    }
 
     const { data } = useUserRead();
 
-    const { mutate } = useProductOrder({ onSuccess });
+   
 
     const user: UserType = data;
 
@@ -53,6 +49,7 @@ const OrderPaymentBtn = ({ productList }: OrderPaymentBtnProps) => {
         return Math.floor(randomNum * (max - min + 1)) + min;
     }
 
+
     const generateCustomerKey = (): string => {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_=.@';
         let key = '';
@@ -65,8 +62,6 @@ const OrderPaymentBtn = ({ productList }: OrderPaymentBtnProps) => {
         return key;
     }
 
-
-
     const orderId = generateRandomId();
 
     const orderName: string =
@@ -76,50 +71,48 @@ const OrderPaymentBtn = ({ productList }: OrderPaymentBtnProps) => {
 
     const totalPrice = productList.reduce((accumulator, product) => accumulator + product.price, 0);
 
-    const OrderInfoList: ProductOrderType[] = productList.map(product => ({
-        orderPayId: orderId,
-        productOptionId: product.productOptionId,
-        req: req,
-        quantity: product.quantity,
-        amount: product.price,
+    const escrowProducts = productList.map(product => ({
+        id: String(product.productOptionId),
+        name: product.name,
+        unitPrice: product.price, // 가격
+        code: String(product.productOptionId), // 상품 관리 코드
+        quantity: product.quantity, // 수량
     }));
+    console.log(escrowProducts)
 
+ 
+     const handleClick = async () => {
+        try {
+            const customerKey = generateCustomerKey();
+            const tossPayments = await loadTossPayments("test_ck_ex6BJGQOVDwZyyR4jxBR3W4w2zNb");
 
+            const payment = tossPayments.payment({ customerKey });
 
-    const handleClick = async () => {
-       
-        // mutate(OrderInfoList);
-
-
-        const customerKey = generateCustomerKey();
-
-        const tossPayments = await loadTossPayments("test_ck_Z1aOwX7K8m4b7av0xO6WryQxzvNP");
-
-        const payment = tossPayments.payment({ customerKey: customerKey });
-
-        await payment.requestPayment({
-            method: "CARD",
-            amount: {
-                currency: "KRW",
-                value: totalPrice
-            },
-            orderId: orderId,
-            orderName: orderName,
-            customerEmail: user.email,
-            card: {
-                useEscrow: false,
-                flowMode: "DEFAULT",
-                useCardPoint: false,
-                useAppCardOnly: false,
-            },
-        }).then(data => {
-
-            mutate(OrderInfoList);
-
-        }).catch((error: any) => {
-            console.log("결제오류", error)
-        });
+            // 결제 요청
+            await payment.requestPayment({
+                method: "CARD",
+                amount: {
+                    currency: "KRW",
+                    value: totalPrice
+                },
+                orderId: orderId,
+                orderName: orderName,
+                customerEmail: user.email,
+                card: {
+                    useEscrow: false,
+                    flowMode: "DEFAULT",
+                    useCardPoint: false,
+                    useAppCardOnly: false,
+                    escrowProducts: escrowProducts
+                },
+                successUrl: `${window.location.origin}/payment-success`, // 결제 성공 시 리디렉션할 URL 설정
+                failUrl: `${window.location.origin}/payment-fail` // 결제 실패 시 리디렉션할 URL 설정
+            });
+        } catch (error) {
+            console.error("결제 오류", error);
+        }
     };
+
 
     return (
         <Button size={"lg"} onClick={handleClick} fullWidth color={"primary"}>{totalPrice.toLocaleString()}원 결제하기</Button>
