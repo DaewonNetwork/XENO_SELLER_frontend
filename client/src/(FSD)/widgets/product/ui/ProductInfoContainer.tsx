@@ -13,8 +13,8 @@ import ReviewInfoList from "../../review/ui/ReviewInfoList";
 import ProductDetailImage from "./ProductDetailImage";
 
 const ProductInfoContainer = () => {
-    const { productColorId } = useParams<{ productColorId: string }>();
-    const { data, isError, error, isPending, refetch } = useProductColorRead(+productColorId);
+    const { productId } = useParams<{ productId: string }>();
+    const { data, isError, error, isPending, refetch } = useProductColorRead(+productId);
 
     const setName = useSetRecoilState(nameState);
 
@@ -23,7 +23,7 @@ const ProductInfoContainer = () => {
     useEffect(() => {
         console.log(productInfo)
         refetch();
-    }, [productColorId, data,refetch]);
+    }, [productId, data,refetch]);
 
     if (!productInfo) return <></>;
 
@@ -34,8 +34,8 @@ const ProductInfoContainer = () => {
             <ProductImageSlideList productImageList={productInfo.productImages} />
             <ProductInfo product={productInfo} />
             {productInfo.booleanColor && (<ProductOtherColorImageList />)}
-            <ProductDetailImage productColorId={productColorId} />
-            <ReviewInfoList productColorId={productColorId} />
+            <ProductDetailImage productId={productId} />
+            <ReviewInfoList productId={productId} />
         </>
     );
 };

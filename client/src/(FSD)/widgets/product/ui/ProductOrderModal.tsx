@@ -12,9 +12,9 @@ import { Select, SelectItem } from "@nextui-org/select";
 interface ProductOrderModalProps extends AppModalType { };
 
 const ProductOrderModal = ({ isOpen, onOpenChange }: ProductOrderModalProps) => {
-    const { productColorId } = useParams<{ productColorId: string }>();
+    const { productId } = useParams<{ productId: string }>();
 
-    const { data, isError, isPending } = useProductColorOrderBarRead(+productColorId);
+    const { data, isError, isPending } = useProductColorOrderBarRead(+productId);
 
     if (!data) return <></>;
 
@@ -45,7 +45,7 @@ const ProductOrderModal = ({ isOpen, onOpenChange }: ProductOrderModalProps) => 
                             </Select>
                         </ModalBody>
                         <ModalFooter className={styles.modal_footer}>
-                            <CartListAddBtn radius={"sm"} variant={"ghost"} size={"lg"} fullWidth productColorId={+productColorId} />
+                            <CartListAddBtn radius={"sm"} variant={"ghost"} size={"lg"} fullWidth productId={+productId} />
                             <Button radius={"sm"} className={"bg-foreground text-background"} size={"lg"} fullWidth>구매하기</Button>
                         </ModalFooter>
                     </>

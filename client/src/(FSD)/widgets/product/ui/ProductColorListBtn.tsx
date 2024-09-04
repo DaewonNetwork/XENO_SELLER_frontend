@@ -13,7 +13,7 @@ import TextMediumShared from "@/(FSD)/shareds/ui/TextMediumShared";
 
 
 interface ProductColorListType {
-    productColorId: number;
+    productId: number;
     productNumber: string;
     productName: string;
     color: string;
@@ -82,7 +82,7 @@ const ProductColorListBtn = () => {
                         {productInfoList
                             .filter(item => item.productNumber === product.productNumber)
                             .map(item => (
-                                <SelectItem key={item.productColorId} onClick={() => handleUpdate(item)}>
+                                <SelectItem key={item.productId} onClick={() => handleUpdate(item)}>
                                     {item.productName} ({item.color})
                                 </SelectItem>
                             ))}
@@ -104,7 +104,7 @@ const ProductColorListBtn = () => {
                         {productInfoList
                             .filter(item => item.productNumber === product.productNumber)
                             .map(item => (
-                                <SelectItem key={item.productColorId} onClick={() => handleRead(item)}>
+                                <SelectItem key={item.productId} onClick={() => handleRead(item)}>
                                     {item.productName} ({item.color})
                                 </SelectItem>
                             ))}
@@ -115,11 +115,11 @@ const ProductColorListBtn = () => {
     };
 
     const handleUpdate = (product: ProductColorListType) => {
-        router.push(`/seller/productColor/update/${product.productColorId}`);
+        router.push(`/seller/productColor/update/${product.productId}`);
     };
 
     const handleRead = (product: ProductColorListType) => {
-        router.push(`/products/${product.productColorId}`);
+        router.push(`/products/${product.productId}`);
     };
 
 

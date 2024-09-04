@@ -15,11 +15,13 @@ export interface ProductCreateResponse {
 
 const productCreateFetch = async (data: ProductCreateData): Promise<ProductCreateResponse> => {
     const { formData, index } = data;
+   
 
     const accessToken = localStorage.getItem("access_token");
+   
 
-    const response = await fetch(`${apiPath}/api/product/upload`, {
-        method: "POST",
+    const response = await fetch(`${apiPath}/api/product/update/image`, {
+        method: "PUT",
         headers: {
             Authorization: `Bearer ${accessToken}`,
         },
@@ -36,7 +38,7 @@ const productCreateFetch = async (data: ProductCreateData): Promise<ProductCreat
     return { responseData, index };
 }
 
-export const useProductCreate = ({ onSuccess, onError }: MutationType): UseMutationResult<ProductCreateResponse, Error, ProductCreateData> => {
+export const useProductImageUpdate = ({ onSuccess, onError }: MutationType): UseMutationResult<ProductCreateResponse, Error, ProductCreateData> => {
     return useMutation({
         mutationFn: (data: ProductCreateData) => {
             return productCreateFetch(data);
