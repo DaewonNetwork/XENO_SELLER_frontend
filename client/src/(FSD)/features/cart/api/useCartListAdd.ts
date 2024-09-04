@@ -3,13 +3,12 @@ import { MutationType } from "../../types/mutation.type";
 import useFetchData from "@/(FSD)/shareds/fetch/useFetchData";
 
 
-export const useProductLikeToggle = ({ onSuccess, onError }: MutationType) => {
-
+export const useCartListAdd = ({ onSuccess, onError }: MutationType) => {
     const fetchData = useFetchData();
-
+    
     return useMutation({
-        mutationFn: (productColorId: number) => {
-            return fetchData({ path: `/like?productColorId=${productColorId}`, isAuthRequired: true })
+        mutationFn: (data: any) => {
+            return fetchData({ path: "/cart", method: "POST", body: data, isAuthRequired: true });
         },
         onSuccess: (data: any) => {
             onSuccess(data);

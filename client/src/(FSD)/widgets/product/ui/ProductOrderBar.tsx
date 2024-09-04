@@ -10,7 +10,7 @@ import { useDisclosure } from "@nextui-org/modal";
 import { useParams } from "next/navigation";
 
 const ProductOrderBar = () => {
-    const { productId } = useParams<{ productId: string }>();
+    const { productColorId } = useParams<{ productColorId: string }>();
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -20,7 +20,7 @@ const ProductOrderBar = () => {
                 <AppInner>
                     <div className={styles.bar_inner}>
                         <div className={styles.left_btn}>
-                            <ProductLikeBtn productId={+productId} />
+                            <ProductLikeBtn productColorId={+productColorId} />
                         </div>
                         <div className={styles.right_btn}>
                             <Button onClick={onOpen} size={"lg"} radius={"sm"} className={`bg-foreground text-background`} fullWidth>구매하기</Button>

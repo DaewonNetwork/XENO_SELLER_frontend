@@ -5,46 +5,41 @@ import Image from "next/image";
 import IconShared from "./IconShared";
 import { useRecoilState } from "recoil";
 import { detailImageState, imagesState } from "../stores/PreviewAtom";
-
-
-import { ProductImageInfoType } from "@/(FSD)/features/product/ui/ProductImageUpdateContainer";
-import { fetchImageToBlob } from "../uitll/base64toBlob";
-import { isUrlState } from "../stores/ProductAtom";
+import { ProductImageInfoType } from "@/(FSD)/features/product/ui/ProductColorUpdateForm";
+import { base64toBlob } from "../uitll/base64toBlob";
 
 interface FileInputSharedProps extends ButtonProps {
     inputId: string;
     setFile: any;
     children?: ReactNode;
     height?: number;
-    url?: string;
-    file?: File | null
-    blockIdx: number
-    index: number
+    image?: ProductImageInfoType;
+    file?: File | null;
+    imageId: number;
+
 }
 
 
 
-const FileInputShared1 = ({ inputId, setFile, height = 160, url, file, blockIdx,index }: FileInputSharedProps) => {
-    const [preview, setPreview] = useState<string | undefined>(undefined);
+const FileInputShared1 = ({ inputId, setFile, height = 160, imageId, file }: FileInputSharedProps) => {
+    const [preview, setPreview] = useState<string | null>(null);
+    const [images, setImages] = useRecoilState(imagesState);
     const inputRef = useRef<HTMLInputElement>(null);
-    const [isUrl, setIsUrl] = useRecoilState(isUrlState)
 
     useEffect(() => {
-        if (url) {
-            setPreview(url);
+
+        const imageToUpdate = images.find((img) => img.imageId === imageId);
+        if (imageToUpdate && !file && imageToUpdate.productColorImage && imageToUpdate.filename) {
+            setPreview(`data:image/jpeg;base64,${imageToUpdate.productColorImage}`);
+            const base64String = `data:image/jpeg;base64,${imageToUpdate.productColorImage}`;
+            const base64Data = base64String.split(',')[1];
             const mimeType = 'image/jpeg';
-            fetchImageToBlob(url)
-                .then(blob => {
-                    // Blob 처리
-                
-                    const newFile = new File([blob], url, { type: mimeType });
-                    setFile(newFile);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            const blob = base64toBlob(base64Data, mimeType);
+            const newFile = new File([blob], imageToUpdate.filename, { type: mimeType });
+            setFile(newFile);
         }
-        if ((!url && file) || (url && file)) {
+
+        if ((!imageToUpdate && file) || (imageToUpdate && file && imageToUpdate.productColorImage && imageToUpdate.filename)) {
             const reader = new FileReader();
             reader.onloadend = () => {
                 const result = reader.result as string;
@@ -52,9 +47,10 @@ const FileInputShared1 = ({ inputId, setFile, height = 160, url, file, blockIdx,
             };
             reader.readAsDataURL(file);
             setFile(file);
+
         }
-   
-    }, [setPreview]);
+       
+    }, [imageId, file, setFile, setPreview]);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files ? e.target.files[0] : null;
@@ -70,21 +66,22 @@ const FileInputShared1 = ({ inputId, setFile, height = 160, url, file, blockIdx,
 
 
     const handleDeletePreview = () => {
+        setPreview(null);
         setFile(undefined);
-        setIsUrl(prev => {
-            // 배열의 깊은 복사
-            const newStates = prev.map((block, idx) => 
-                idx === blockIdx 
-                    ? [...block.slice(0, index), false, ...block.slice(index + 1)] 
-                    : block
-            );
-            return newStates;
+        setImages((prevImages) => {
+            const updatedImages = [...prevImages];
+            const imageIndex = updatedImages.findIndex((img) => img.imageId === imageId);
+            if (imageIndex !== -1) {
+                updatedImages.splice(imageIndex, 1);
+            }
+            return updatedImages;
         });
+
+
         if (inputRef.current) {
             inputRef.current.value = "";
             inputRef.current.dispatchEvent(new Event("change", { bubbles: true }));
         }
-        setPreview(undefined);
     };
 
     return (

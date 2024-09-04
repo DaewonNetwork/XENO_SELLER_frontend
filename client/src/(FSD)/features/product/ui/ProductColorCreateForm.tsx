@@ -1,48 +1,60 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
-import { set, useForm } from "react-hook-form";
-import { z } from "zod";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { setErrorMap, z } from "zod";
 import styles from "@/(FSD)/shareds/styles/ProductStyle.module.scss";
 import FormInputShared from "@/(FSD)/shareds/ui/FormInputShared";
 import TextMediumShared from "@/(FSD)/shareds/ui/TextMediumShared";
 import { Button } from "@nextui-org/button";
-import { Select, SelectItem, } from "@nextui-org/select";
+import { Select, SelectItem } from "@nextui-org/select"
 import ProductImageCreateModal from "./ProductImageCreateModal";
+import { useParams, useRouter } from "next/navigation";
+import { useProductRead } from "@/(FSD)/entities/product/api/useProductRead";
+import { ProductCreateGetInfoType } from "@/(FSD)/shareds/types/product/ProductInfo.type";
+
+import { useProductColorCreate } from "../api/useProductColorCreate";
 import { useRecoilValue } from "recoil";
 import { productDetailImageState, productImagesState } from "@/(FSD)/shareds/stores/ProductCreateAtome";
-import { useProductCreate } from "../api/useProductCreate";
-import { SizeStocksType } from "./ProductColorCreateForm";
 import { Input } from "@nextui-org/input";
-import { useRouter } from "next/navigation";
 
 
-const ProductCreateForm = () => {
-    const [category, setCategory] = useState<string>("");
-    const [categorySub, setCategorySub] = useState<string>("");
-    const [sizeStocks, setSizeStocks] = useState<SizeStocksType[]>([]);
-    const sizeArray = ["S", "M", "L", "XL"];
+
+export interface SizeStocksType {
+    id: number;
+    size: string;
+    stock: number;
+}
+
+
+const ProductColorCreateForm = () => {
+
+    const { productId } = useParams<{ productId: string }>();
+
     const router = useRouter();
-    const categories: Record<string, string[]> = {
-        상의: ["반팔", "긴팔"],
-        하의: ["청바지", "반바지", "면", "나일론"],
-        아우터: ["후드집업", "코트", "바람막이", "패딩", "자켓"]
-    };
-
-
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const { data } = useProductRead(+productId)
 
     const productImages = useRecoilValue(productImagesState);
     const productDetailImage = useRecoilValue(productDetailImageState);
 
+
+
+    const [sizeStocks, setSizeStocks] = useState<SizeStocksType[]>([]);
+    const sizeArray = ["S", "M", "L", "XL"];
+
+    useEffect(() => {
+
+    }, [data]);
+
+    const productInfo: ProductCreateGetInfoType = data;
+
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
     const schema = z.object({
-        name: z.string(),
-        season: z.string(),
-        price: z.string(),
-        priceSale: z.string(),
-        productNumber: z.string(),
-        colors: z.string(),
+        color: z.string().refine(value => !productInfo.colorType.includes(value), {
+            message: "중복된 색상입니다."
+        }),
     });
 
     const { control, handleSubmit, formState: { errors, isValid, submitCount } } = useForm({
@@ -50,36 +62,38 @@ const ProductCreateForm = () => {
         mode: "onChange"
     });
 
+
+
     const onSuccess = (data: any) => {
         router.push('/seller')
-    };
+    }
 
-    const onError = () => {
-        console.log("error");
-    };
-
-    const { mutate, error } = useProductCreate({ onSuccess, onError });
-
-    console.log(error);
+    const { mutate } = useProductColorCreate({ onSuccess });
 
     const onSubmit = (data: any) => {
+
+
         const formData = new FormData();
+
         const sizeStocksToSend = sizeStocks.map(({ id, ...rest }) => rest);
-        formData.append("productCreateDTO", JSON.stringify({category: category, categorySub: categorySub, price: +data.price, sale: !!data.priceSale, priceSale: +data.priceSale, size: sizeStocksToSend , ...data }));
-        productImages.forEach((image:File) => {
+        formData.append("productColorCreateDTO", JSON.stringify({ productId: productId, color: data.color, size: sizeStocksToSend }));
+        productImages.forEach((image: File) => {
             if (image) {
                 formData.append("productImages", image);
             }
         });
         formData.append("productDetailImage", productDetailImage);
 
+    
         mutate(formData);
-    };
 
+    }
+
+    if (!data) return <></>
 
     const handleAddSizeStock = () => {
         const newId = sizeStocks.length > 0 ? sizeStocks[sizeStocks.length - 1].id + 1 : 1;
-        setSizeStocks([...sizeStocks, { id: newId, size: '', stock: 0 }]);
+        setSizeStocks([...sizeStocks, { id: newId, size: "", stock: 0 }]);
     };
 
     const handleRemoveSizeStock = (idToRemove: number) => {
@@ -101,44 +115,45 @@ const ProductCreateForm = () => {
         setSizeStocks(updatedSizeStocks);
     };
 
+    const isSizeStockValid: boolean = sizeStocks.length === 0 || sizeStocks.some(item => !item.size || item.stock === 0);
+
     return (
         <>
             <form style={{ display: isOpen ? "none" : "block" }} className={styles.product_create_form} onSubmit={handleSubmit(onSubmit)}>
                 <TextMediumShared isLabel={true} htmlFor={"name"}>상품 이름</TextMediumShared>
-                <FormInputShared autoFocus={true} isClearable size={"lg"} variant={"flat"} isInvalid={!!errors.name} radius={"none"} errorMessage={errors.name && <>{errors.name.message}</>} name={"name"} control={control} placeholder={"상품명을 입력해주세요."} />
+                <FormInputShared isClearable readOnly={true} name={"name"} control={control} placeholder={productInfo.name} />
                 <TextMediumShared isLabel={true} htmlFor={"productNumber"}>품번</TextMediumShared>
-                <FormInputShared isClearable size={"lg"} variant={"flat"} isInvalid={!!errors.product_number} radius={"none"} errorMessage={errors.product_number && <>{errors.product_number.message}</>} name={"productNumber"} control={control} placeholder={"품번을 입력해주세요."} />
+                <FormInputShared isClearable readOnly={true} name={"productNumber"} control={control} placeholder={productInfo.productNumber} />
                 <TextMediumShared isLabel={true} htmlFor={"season"}>시즌</TextMediumShared>
-                <FormInputShared isClearable size={"lg"} variant={"flat"} isInvalid={!!errors.season} radius={"none"} errorMessage={errors.season && <>{errors.season.message}</>} name={"season"} control={control} placeholder={"시즌을 입력해주세요."} />
+                <FormInputShared isClearable readOnly={true} name={"season"} control={control} placeholder={productInfo.season} />
                 <TextMediumShared isLabel={true} htmlFor={"price"}>가격</TextMediumShared>
-                <FormInputShared isClearable size={"lg"} variant={"flat"} isInvalid={!!errors.price} radius={"none"} errorMessage={errors.price && <>{errors.price.message}</>} name={"price"} control={control} placeholder={"가격을 입력해주세요."} />
+                <FormInputShared isClearable readOnly={true} name={"price"} control={control} placeholder={`${productInfo.price.toLocaleString()}원`} />
                 <TextMediumShared isLabel={true} htmlFor={"priceSale"}>할인 가격</TextMediumShared>
-                <FormInputShared isClearable size="lg" variant="flat" isInvalid={!!errors.priceSale} radius="none" errorMessage={errors.priceSale && <>{errors.priceSale.message}</>} name={"priceSale"} control={control} placeholder="할인 가격을 입력해주세요." />
+                <FormInputShared isClearable readOnly={true} name={"priceSale"} control={control} placeholder={`${productInfo.priceSale.toLocaleString()}원`} />
                 <TextMediumShared>카테고리</TextMediumShared>
                 <Select
                     size={"lg"}
-                    onChange={e => {
-                        setCategory(e.target.value);
-                        setCategorySub("");
-                    }}
-                    placeholder={"카테고리를 입력해주세요."}
+                    placeholder={productInfo.category}
+                    isDisabled
                 >
-                    {Object.keys(categories).map((cat) => (
-                        <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                    ))}
+                    <SelectItem key={""}>
+                    </SelectItem>
                 </Select>
                 <TextMediumShared>서브 카테고리</TextMediumShared>
                 <Select
                     size={"lg"}
-                    onChange={e => setCategorySub(e.target.value)}
-                    placeholder={"서브 카테고리를 입력해주세요."}
+                    placeholder={productInfo.categorySub}
+                    isDisabled
                 >
-                    {categories[category || "상의"].map((subCat) => (
-                        <SelectItem key={subCat} value={subCat}>{subCat}</SelectItem>
-                    ))}
+                    <SelectItem key={""}>
+                    </SelectItem>
                 </Select>
-                <TextMediumShared isLabel={true} htmlFor={"colors"}>색상</TextMediumShared>
-                <FormInputShared isClearable size="lg" variant="flat" isInvalid={!!errors.colors} radius="none" errorMessage={errors.colors && <>{errors.colors.message}</>} name={"colors"} control={control} placeholder="색상을 입력해주세요." />
+                <TextMediumShared>기존 색상입니다.</TextMediumShared>
+                {productInfo.colorType.map((color, index) => (
+                    <TextMediumShared key={index}>{color}</TextMediumShared>
+                ))}
+                <TextMediumShared isLabel={true} htmlFor={"color"}>색상</TextMediumShared>
+                <FormInputShared size="lg" variant="flat" isInvalid={!!errors.color} radius="none" errorMessage={errors.color && <>{errors.color.message}</>} name={"color"} control={control} placeholder="색상을 입력해주세요." />
                 <Button
                     type="button"
                     onClick={handleAddSizeStock}
@@ -187,6 +202,7 @@ const ProductCreateForm = () => {
                         </Button>
                     </div>
                 ))}
+
                 <TextMediumShared>이미지</TextMediumShared>
                 <Button
                     onClick={_ => {
@@ -196,11 +212,11 @@ const ProductCreateForm = () => {
                 >
                     이미지 등록하기
                 </Button>
-                <Button isDisabled={(!isValid) || (!productImages) || (!productDetailImage) || (!category) || (!categorySub)} fullWidth size={"lg"} type={"submit"} color={"primary"}>등록하기</Button>
+                <Button isDisabled={(!isValid) || (!productImages) || (!productDetailImage) || (isSizeStockValid)} fullWidth size={"lg"} type={"submit"} color={"primary"}>등록하기</Button>
             </form>
-            {isOpen && <ProductImageCreateModal setIsOpen={setIsOpen} files={productImages} detailFile={productDetailImage}/>}
+            {isOpen && <ProductImageCreateModal setIsOpen={setIsOpen} files={productImages} detailFile={productDetailImage} />}
         </>
     );
 };
 
-export default ProductCreateForm;
+export default ProductColorCreateForm;

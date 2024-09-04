@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { MutationType } from "../../types/mutation.type";
 
-const productCreateFetch = async (data: FormData) => {
+const productColorUpdateFetch = async (data: FormData) => {
     const accessToken = localStorage.getItem("access_token");
 
-    const response = await fetch("http://localhost:8090/api/product/create", {
-        method: "POST",
+    const response = await fetch("http://localhost:8090/api/product/color/update", {
+        method: "PUT",
         headers: {
             Authorization: `Bearer ${accessToken}`,
         },
@@ -22,10 +22,10 @@ const productCreateFetch = async (data: FormData) => {
     return responseData;
 }
 
-export const useProductCreate = ({ onSuccess, onError }: MutationType) => {
+export const useProductColorUpdate = ({ onSuccess, onError }: MutationType) => {
     return useMutation({
         mutationFn: (data: FormData) => {
-            return productCreateFetch(data);
+            return productColorUpdateFetch(data);
         },
         onSuccess: (data: any) => {
             onSuccess(data);
