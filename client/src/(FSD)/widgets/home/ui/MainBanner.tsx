@@ -3,8 +3,6 @@
 import React from "react";
 import styles from "@/(FSD)/shareds/styles/MainStyle.module.scss";
 import Slider from "react-slick";
-import { Skeleton } from "@nextui-org/skeleton";
-import banner from "../../../../../asd.gif"
 
 const MainBanner = () => {
     const settings = {
@@ -20,7 +18,9 @@ const MainBanner = () => {
 
     return (
         <div className={`${styles.content} ${styles.banner}`}>
-           <img src={banner.src}  className={styles.bannerImage} />
+            <Slider {...settings}>
+                
+            </Slider>
         </div>
     );
 };

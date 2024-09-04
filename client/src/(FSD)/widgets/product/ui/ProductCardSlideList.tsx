@@ -9,12 +9,12 @@ import Slider from "react-slick";
 import ProductCard from "@/(FSD)/entities/product/ui/ProductCard";
 
 
-interface ProductCardSlideListType {
+interface ProductCardSlideListProps {
     productList: ProductType[];
     isRank?: boolean;
 }
 
-const ProductCardSlideList = ({ productList, isRank = false }: ProductCardSlideListType) => {
+const ProductCardSlideList = ({ productList, isRank = false }: ProductCardSlideListProps) => {
     const settings = {
         dots: false,
         infinite: false,
@@ -24,7 +24,6 @@ const ProductCardSlideList = ({ productList, isRank = false }: ProductCardSlideL
         arrows: false,
     };
 
-    console.log(productList)
     if((!productList)) return <></>;
 
     return (

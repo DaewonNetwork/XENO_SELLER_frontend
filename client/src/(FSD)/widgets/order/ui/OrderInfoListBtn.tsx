@@ -1,6 +1,5 @@
 "use client"
 
-import { useProductBySellerRead } from "@/(FSD)/entities/product/api/useProductBySellerRead";
 import { useEffect, useState } from "react";
 import { Listbox, ListboxItem } from "@nextui-org/listbox";
 import { useRouter } from "next/navigation";

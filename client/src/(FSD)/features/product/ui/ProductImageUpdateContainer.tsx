@@ -10,7 +10,6 @@ import { productDetailImageState, productImagesState } from "@/(FSD)/shareds/sto
 import FormInputShared from "@/(FSD)/shareds/ui/FormInputShared";
 import { Input } from "@nextui-org/input";
 import ProductImageUpdateModal from "./ProductImageUpdateModal";
-import { useProductColorSizeStockRead } from "@/(FSD)/entities/product/api/useProductColorSizeStockRead";
 import { imagesState } from "@/(FSD)/shareds/stores/PreviewAtom";
 import { ProductCreateResponse, useProductImageUpdate } from "../api/useProductImageUpdate";
 export interface ProductImageInfoType {

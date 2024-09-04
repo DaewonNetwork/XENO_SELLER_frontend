@@ -1,7 +1,8 @@
+@import "theme.scss";
+
 $content_pad_top: 60px;
 $nav_height: 54px;
 $form_height: 58px;
-$width: 520px;
 
 .root {
     width: 100%;
@@ -35,7 +36,7 @@ $width: 520px;
     display: block;
     position: fixed;
     top: 0;
-    z-index: 999;
+    z-index: 49;
 }
 
 .fixed_btm_bar {
@@ -43,7 +44,7 @@ $width: 520px;
     display: block;
     position: fixed;
     bottom: 0;
-    z-index: 999;
+    z-index: 49;
 }
 
 
@@ -114,6 +115,7 @@ $width: 520px;
 
 .section {
     padding: 60px 0;
+    height: auto;
     min-height: 100%;
 }
 

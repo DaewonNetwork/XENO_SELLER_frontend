@@ -11,7 +11,7 @@ import { Button } from "@nextui-org/button";
 import ProductImageCreateModal from "./ProductImageCreateModal";
 import { useRecoilState } from "recoil";
 import { productDetailImageState, productImagesState } from "@/(FSD)/shareds/stores/ProductCreateAtome";
-import { ProductCreateResponse, useProductCreate } from "../api/useProductCreate";
+import { useProductCreate } from "../api/useProductCreate";
 import { useRouter } from "next/navigation";
 import ProductImageCheckModal from "@/(FSD)/entities/product/ui/ProductImageCheckModal";
 import { download, newDownload } from "@/(FSD)/entities/product/api/useProductListExcelDownload";

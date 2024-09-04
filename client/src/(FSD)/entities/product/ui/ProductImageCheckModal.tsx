@@ -52,7 +52,7 @@ const ProductImageCheckModal = ({ setCheckOpen }: ProductImageCheckModalProps) =
             <AppFixedTopBar>
                 <AppTitleHeader
                     title={"이미지 조회하기"}
-                    left={<Button size={"sm"} isIconOnly onClick={() => setCheckOpen(false)} variant={"light"}><IconShared iconType={"close"} /></Button>}
+                    
                 />
             </AppFixedTopBar>
             {images.map((image) => (

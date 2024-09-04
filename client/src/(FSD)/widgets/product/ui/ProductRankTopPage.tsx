@@ -1,12 +1,12 @@
 "use client";
 
-import { useProductRankTopPage } from "@/(FSD)/entities/product/api/useProductRankTopPage";
 import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import ProductCardList from "./ProductCardList";
+import { useProductRankPageRead } from "@/(FSD)/entities/product/api/useProductRankPageRead";
 
 const ProductRankTopPage = () => {
-    const { productCardList, fetchNextPage, refetch, isFetchingNextPage, isPending, isError } = useProductRankTopPage();
+    const { productCardList, fetchNextPage, refetch, isFetchingNextPage, isPending, isError } = useProductRankPageRead({ type: "상의" });
 
     const { ref, inView } = useInView();
 

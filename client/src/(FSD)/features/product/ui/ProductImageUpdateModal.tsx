@@ -69,7 +69,7 @@ const ProductImageUpdateModal = ({ setIsOpen, files, detailFile, index, productN
             <AppFixedTopBar>
                 <AppTitleHeader
                     title={"이미지 등록하기"}
-                    left={<Button size={"sm"} isIconOnly onClick={_ => { setIsOpen(false); }} variant={"light"}><IconShared iconType={"close"} /></Button>}
+                   
                 />
             </AppFixedTopBar>
             <AppSection>

@@ -1,12 +1,12 @@
 "use client";
 
-import { useProductRankOuterPage } from "@/(FSD)/entities/product/api/useProductRankOuterPage";
 import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import ProductCardList from "./ProductCardList";
+import { useProductRankPageRead } from "@/(FSD)/entities/product/api/useProductRankPageRead";
 
 const ProductRankOuterPage = () => {
-    const { productCardList, fetchNextPage, refetch, isFetchingNextPage, isPending, isError } = useProductRankOuterPage();
+    const { productCardList, fetchNextPage, refetch, isFetchingNextPage, isPending, isError } = useProductRankPageRead({ type: "아우터" });
 
     const { ref, inView } = useInView();
 

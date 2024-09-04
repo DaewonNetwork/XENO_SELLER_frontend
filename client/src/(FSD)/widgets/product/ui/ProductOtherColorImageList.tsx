@@ -11,7 +11,7 @@ import { useProductColorFirstImegeListRead } from "@/(FSD)/entities/product/api/
 
 export interface ProductImages {
     productId: number;          // 상품 색상 ID (숫자)
-    productImage: string;   // 상품 색상 이미지 (Uint8Array)
+    productColorImage: Uint8Array;   // 상품 색상 이미지 (Uint8Array)
 }
 
 const ProductOtherColorImageList = () => {
@@ -44,7 +44,7 @@ const ProductOtherColorImageList = () => {
         
     }, [productImages,data, setImages]);
     
-    const totalImages = useMemo(() => productImages.filter(p => p.productImage).length, [productImages]);
+    const totalImages = useMemo(() => productImages.filter(p => p.productColorImage).length, [productImages]);
     const shouldEnableSlider = totalImages >= 3;
 
     if(!data) return <></>
@@ -59,13 +59,13 @@ const ProductOtherColorImageList = () => {
                     <h4 className={style.different_color_text}>다른 색상 상품도 있어요</h4>
                 </div>
 
-                {shouldEnableSlider ? (<div className={style.product_detail_slide_list}>
+                {shouldEnableSlider ? (<div>
                     <Slider {...sliderSettings}>
                         {productImages.map((p, index) => (
                             <div key={index} className={style.different_color_images} style={{ cursor: "pointer" }}>
                                 <a href={`/products/${p.productId}`}>
                                     <img
-                                        src={`data:image/jpeg;base64,${p.productImage}`}
+                                        src={`data:image/jpeg;base64,${p.productColorImage}`}
                                         alt={`상품 이미지 ${p.productId}`}
                                     />
                                 </a>
@@ -79,7 +79,7 @@ const ProductOtherColorImageList = () => {
                         <div key={index} className={style.different_color_images} style={{ cursor: "pointer" }}>
                             <a href={`/products/${p.productId}`}>
                                 <img
-                                    src={`data:image/jpeg;base64,${p.productImage}`}
+                                    src={`data:image/jpeg;base64,${p.productColorImage}`}
                                     alt={`상품 이미지 ${p.productId}`}
                                 />
                             </a>
@@ -87,8 +87,6 @@ const ProductOtherColorImageList = () => {
                     ))
                 )}
             </div>
-      
-            <div className={style.block} />
         </>
     );
 };
