@@ -78,7 +78,10 @@ const AuthSigninForm = () => {
                     <TextMediumShared isLabel htmlFor={"password"}>비밀번호</TextMediumShared>
                     <PasswordInputShared size={"lg"} variant={"underlined"} isInvalid={!!errors.password} radius={"none"} errorMessage={errors.password && <TextXSmallShared>{String(errors.password.message)}</TextXSmallShared>} name={"password"} control={control} placeholder={"비밀번호를 입력해주세요."} />
                 </div>
-                <Button isDisabled={(!isValid) || (submitCount >= 5)} type={"submit"} variant={"solid"} color={(!isValid) || (submitCount >= 5) ? "default" : "primary"} size={"lg"} radius={"sm"} fullWidth>로그인</Button>
+                <Button 
+                // isDisabled={(!isValid) || (submitCount >= 5)}
+                 type={"submit"} variant={"solid"} 
+                 color={(!isValid) || (submitCount >= 5) ? "primary" : "primary"} size={"lg"} radius={"sm"} fullWidth>로그인</Button>
                 <div className={styles.btn_box}>
                     <Link href={"/auth/signup"}><TextSmallShared>가입하기</TextSmallShared></Link>
                 </div>

@@ -20,14 +20,7 @@ const SellerProductSalesListBtn = () => {
     });
 
 
-    let formatter = useDateFormatter({ dateStyle: "long" });
 
-    // const [startYear, setStartYear] = useState<number>(2024);
-    // const [startMonth, setStartMonth] = useState<number>(1);
-    // const [startDay, setStartDay] = useState<number>(1);
-    // const [endYear, setEndYear] = useState<number>(2024);
-    // const [endMonth, setEndMonth] = useState<number>(12);
-    // const [endDay, setEndDay] = useState<number>(31);
     const { end, start } = value;
 
     const endDay = end.day;

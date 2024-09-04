@@ -4,12 +4,12 @@ import React, { useEffect, useState } from "react";
 import styles from "@/(FSD)/shareds/styles/ProductStyle.module.scss";
 import AppTitleHeader from "@/(FSD)/widgets/app/ui/AppTitleHeader";
 import { Button } from "@nextui-org/button";
-import IconShared from "@/(FSD)/shareds/ui/IconShared";
+
 import AppSection from "@/(FSD)/widgets/app/ui/AppSection";
 import AppInner from "@/(FSD)/widgets/app/ui/AppInner";
 import AppFixedTopBar from "@/(FSD)/widgets/app/ui/AppFixedTopBar";
 import TextMediumShared from "@/(FSD)/shareds/ui/TextMediumShared";
-import FileInputShared from "@/(FSD)/shareds/ui/FileInputShared";
+
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { productDetailImageState, productImagesState } from "@/(FSD)/shareds/stores/ProductCreateAtome";
 import FileInputShared1 from "@/(FSD)/shareds/ui/FileInputShared1";
