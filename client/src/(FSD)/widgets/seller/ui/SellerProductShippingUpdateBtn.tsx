@@ -1,23 +1,18 @@
 "use client"
 
-import { useProductBySellerRead } from "@/(FSD)/entities/product/api/useProductBySellerRead";
+
 import React, { useEffect, useState } from "react";
-import { Listbox, ListboxItem } from "@nextui-org/listbox";
+
 import { useRouter } from "next/navigation";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
-import { Select, SelectItem } from "@nextui-org/select";
+
 import IconShared from "@/(FSD)/shareds/ui/IconShared";
 import TextMediumShared from "@/(FSD)/shareds/ui/TextMediumShared";
-import { useRecoilState } from "recoil";
-import { productListState } from "@/(FSD)/shareds/stores/ProductAtom";
+
 import { paymentCompletedOrderDownload } from "@/(FSD)/entities/product/api/useProductListExcelDownload";
 import { apiPath } from "@/(FSD)/shareds/fetch/APIpath";
-interface ProductColorCreateBtnType {
-    productId: number;
-    productNumber: string;
-    productName: string;
-}
+
 
 const SellerProductShippingUpdateBtn = () => {
 
